@@ -4,104 +4,41 @@ import java.io.*;
 
 class Main{
 
-    static int[][] input = new int[6+2][6+2];
-    static int[][] visited = new int[6+2][6+2];
-    static List<Planar> pls = new ArrayList<>();
+    static int N = 6;
+    static int[][] input = new int[N+2][N+2];
+    static int[][] visited = new int[N+2][N+2];
 
-    public static void main(String[] args) throws IOException{
+    static int[] position = new int[N+1];
+
+    public static void main(String[] args) throws IOException {
 
         BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
-        for(int i = 1; i<=6; i++){
+
+        for(int i = 1; i<=N; i++){
             StringTokenizer st = new StringTokenizer(bf.readLine());
-            for(int j = 1; j<=6; j++){
+            for(int j = 1; j<=N; j++){
                 input[i][j] = Integer.parseInt(st.nextToken());
             }
         }
-        for(int i = 0; i<=7; i++){
-            visited[0][i] = 1;
+        for(int i = 0; i<=N+1; i++){
             visited[i][0] = 1;
-            visited[7][i] = 1;
-            visited[i][7] = 1;
+            visited[i][N+1] = 1;
+            visited[0][i] = 1;
+            visited[N+1] = 1;
         }
-
-        // END OF INIT
-        Planar temp = null;
-        for(int i = 1; i<=6; i++){
-            for(int j = 1; j<=6; j++){
-                if(visited[i][j] == 0 && input[i][j] != 0){
-                    visited[i][j] = 1;
-                    temp = new Planar(input[i][j]);
-                    pls.add(temp);
-                    def1(i, j, temp.center);
-                }
-            }
-        }
-
+        def1();
     }
+    // index : 1 ~ 6, 
+    static int def1(int i, int j, int index, int direction){
+        int[] xx = new int[]{1, -1, 0, 0};
+        int[] yy = new int[]{0, 0, 1, -1};
+        for(int k = 0; k<4; k++){
+            if(visited[i+xx[k]][j+yy[k]] == 0 || input[i+xx[k]][j+yy[k]] != 0){
+                visited[i+xx[k]][j+yy[k]] = 1;
+                
+                def1(i+xx[k], j+yy[k]);
 
-    static void def1(int x, int y, Node node){
-
-        System.out.println("x: "+x+" y: "+y);
-
-        int[] xx = new int[]{0,0,1,-1};
-        int[] yy = new int[]{1,-1,0,0};
-
-        for(int i = 0; i<4; i++){
-            if(visited[x+xx[i]][y+yy[i]] == 0 && input[x+xx[i]][y+yy[i]] != 0){
-                visited[x+xx[i]][y+yy[i]] = 1;
-                Node temp = new Node(x+xx[i], y+yy[i], node.no, input[x+xx[i]][y+yy[i]]);
-                if(i == 0){
-                    node.right = temp;
-                }
-                else if(i == 1){
-                    node.left = temp;
-                }
-                else if(i == 2){   
-                    node.up = temp;
-                }
-                else if(i == 3){
-                    node.down = temp;
-                }
-                def1(x+xx[i], y+yy[i], temp);
             }
         }
     }
 }
-
-class Planar{
-
-    Node center = null;
-
-    Node p1 = null;
-    Node p2 = null;
-    Node p3 = null;
-    Node p4 = null;
-    Node p5 = null;
-    Node p6 = null;
-
-    Planar(int index){
-        center = new Node(index, 1);
-        p1 = center;
-    }
-
-    int def2(){
-
-    }
-
-}
-
-class Node{
-    int index = 0;
-    int position = 0;   // 1 ~ 6
-
-    Node up = null;
-    Node down = null;
-    Node left = null;
-    Node right = null;
-
-    Node(int index, int position){
-        this.index = index;
-        this.position = position;
-    }
-}
-
