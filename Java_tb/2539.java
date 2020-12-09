@@ -7,61 +7,66 @@ class Main{
     static int row, col;
     static int need;
     static int N;
-    static List<Point> input = new ArrayList<>();
-    static List<Line> lines = new ArrayList<>();
+    static List<Integer> xx = null;
+    static int highest = -1;
+
+    static int min;
+    static int max;
+    static int result = 10000000;
 
     public static void main(String[] args) throws IOException {
 
         BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         StringTokenizer st = new StringTokenizer(bf.readLine());
 
         row = Integer.parseInt(st.nextToken());
         col = Integer.parseInt(st.nextToken());
         need = Integer.parseInt(bf.readLine());
         N = Integer.parseInt(bf.readLine());
+
+        xx = new ArrayList<>();
         for(int i = 0; i<N; i++){
             st = new StringTokenizer(bf.readLine());
-            input.add(
-                new Point(
-                    Integer.parseInt(st.nextToken()),
-                    Integer.parseInt(st.nextToken())
-                )
-            );
+            int tempY = Integer.parseInt(st.nextToken());
+            int tempX = Integer.parseInt(st.nextToken());
+            xx.add(tempX);
+            if(highest < tempY){
+                highest = tempY;
+            }
         }
-        Collections.sort(input);
-        for(int i = 0; i<N-1; i++){
-            Point p1 = input.get(i);
-            Point p2 = input.get(i+1);
-            lines.add(new Line(p1, p2)); 
+
+        Collections.sort(xx);
+
+        min = highest;
+        max = 1000000;
+      
+        while(min < max){
+            result = (max + min)/2;
+
+            int count = 0;
+            int leftPoint = -1;
+            for(int i = 0; i<N; i++){
+                int tempX = xx.get(i);
+                if(leftPoint == -1){
+                    leftPoint = tempX;
+                    count++;
+                }
+                if(result < tempX - leftPoint + 1){
+                    count++;
+                    leftPoint = tempX;
+                }
+            }
+            if(count <= need){
+                max = result;
+            }
+            else{
+                min = result+1;
+            }
         }
-    }
-}
-
-class Line {
-    Point p1, p2;
-    int length;
-
-    Line(Point p1, Point p2){
-        this.p1 = p1;
-        this.p2 = p2;
-        this.length = Math.abs(p1.x - p2.x);
-    }
-}
-
-class Point implements Comparable<Point>{
-
-    static int highest = 0;
-    int y, x;
-
-    Point(int x, int y){
-        this.y = y;
-        this.x = x;
-        if(highest < this.y)
-            highest = this.y;
-    }
-
-    @Override
-    public int compareTo(Point p){
-        return this.x - p.x;
+        bw.write(Integer.toString(min));
+        bw.flush();
+        bf.close();
+        bw.close();
     }
 }
