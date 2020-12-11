@@ -12,7 +12,6 @@ class Main{
 
     static int min;
     static int max;
-    static int result = 10000000;
 
     public static void main(String[] args) throws IOException {
 
@@ -42,12 +41,12 @@ class Main{
         max = 1000000;
       
         while(min < max){
-            result = (max + min)/2;
+            int result = (max + min)/2;
 
             int count = 0;
             int leftPoint = -1;
-            for(int i = 0; i<N; i++){
-                int tempX = xx.get(i);
+            for(int i : xx){
+                int tempX = i;
                 if(leftPoint == -1){
                     leftPoint = tempX;
                     count++;
