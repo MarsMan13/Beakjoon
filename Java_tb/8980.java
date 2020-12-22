@@ -7,7 +7,7 @@ class Main{
     static int N, C;    // villages, max of truck
     static int M;       // mails
     static List<Mail> input = new ArrayList<>();
-
+    static int[] minor = null;
 
     public static void main(String[] args) throws IOException {
 
@@ -18,6 +18,7 @@ class Main{
         C = Integer.parseInt(st.nextToken());
         M = Integer.parseInt(bf.readLine());
 
+        minor = new int[N+1];
         for(int i = 0; i<M; i++){
             st = new StringTokenizer(bf.readLine());
             int from = Integer.parseInt(st.nextToken());
@@ -28,12 +29,33 @@ class Main{
         Collections.sort(input);
 
         // END OF INIT
-        int rest = C;
+
+        int result = 0;
+        int[] rest = new int[N+1];
+        for(int i = 0; i<N; i++)
+            rest[i] = C;
         for(Mail m : input){
+            int from = m.from;
+            int to = m.to;
 
-        }
+            int min = rest[from];
+            for(int i = from; i< to; i++){
+                if(rest[i] < min){
+                    min = rest[i];
+                }
+            }
 
+            int minor = m.size;
+            if(min < m.size)
+                minor = min;
 
+            for(int i = from; i<to; i++){
+                rest[i] -= minor;
+            }
+            result += minor;
+        } 
+
+        System.out.println(result);
     }
 }
 
@@ -50,10 +72,10 @@ class Mail implements Comparable<Mail>{
 
     @Override
     public int compareTo(Mail m){
-        if(this.from != m.from){
-            return this.from - m.from;
+        if(this.to != m.to){
+            return this.to - m.to;
         }
-        return this.to - m.to;
+        return this.from - m.from;
     }
 
     @Override
