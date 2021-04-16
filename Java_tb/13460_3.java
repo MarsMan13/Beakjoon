@@ -104,7 +104,7 @@ class Node{
         //     beads[1] = red_bead;
         // }    
         if(mode == 0){
-            if(blue_bead.j < red_bead.j){
+            if(blue_bead.i < red_bead.i){
                 beads[0] = red_bead;
                 beads[1] = blue_bead;
             }
@@ -114,7 +114,7 @@ class Node{
             }
         }
         if(mode == 1){
-            if(blue_bead.j < red_bead.j){
+            if(blue_bead.i < red_bead.i){
                 beads[0] = blue_bead;
                 beads[1] = red_bead;
             }
@@ -124,7 +124,7 @@ class Node{
             }
         }
         if(mode == 2){
-            if(blue_bead.i < red_bead.i){
+            if(blue_bead.j < red_bead.j){
                 beads[0] = red_bead;
                 beads[1] = blue_bead;
             }
@@ -134,7 +134,7 @@ class Node{
             }
         }
         if(mode == 3){
-            if(blue_bead.i < red_bead.i){
+            if(blue_bead.j < red_bead.j){
                 beads[0] = blue_bead;
                 beads[1] = red_bead;
             }
@@ -148,8 +148,10 @@ class Node{
         int ret = -2;
         for(int k = 0; k<2; k++){
             while(Main.board[beads[k].i + ii[mode]][beads[k].j + jj[mode]] != 0){
-                if(beads[k].i + ii[mode] == beads[(k+1)%2].i && beads[k].j + jj[mode] == beads[(k+1)%2].j && ret<0){
-                    break;
+                if(k == 1 && ret < 0){
+                    if(beads[k].i + ii[mode] == beads[0].i && beads[k].j + jj[mode] == beads[0].j){
+                        break;
+                    }
                 }
                 beads[k].i += ii[mode];
                 beads[k].j += jj[mode];
