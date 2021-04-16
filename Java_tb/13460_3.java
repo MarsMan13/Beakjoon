@@ -1,8 +1,6 @@
 import java.util.*;
 import java.io.*;
 
-
-
 class Main{
     
     static int N, M;
@@ -50,7 +48,8 @@ class Main{
     }
     
     public static int bfs(){
-        
+       
+        int a = 0;
         Queue<Node> queue = new LinkedList<>();
         queue.offer(new Node(red_i, red_j, blue_i, blue_j, 0));
         while(!(queue.isEmpty())){
@@ -96,14 +95,54 @@ class Node{
        
         Bead[] beads = new Bead[2];
         
-        if(blue_bead.pos[indexor] * reversor[mode] < red_bead.pos[indexor] * reversor[mode]){
-            beads[0] = red_bead;
-            beads[1] = blue_bead;
+        // if(blue_bead.pos[indexor] * reversor[mode] < red_bead.pos[indexor] * reversor[mode]){
+        //     beads[0] = red_bead;
+        //     beads[1] = blue_bead;
+        // }
+        // else{
+        //     beads[0] = blue_bead;
+        //     beads[1] = red_bead;
+        // }    
+        if(mode == 0){
+            if(blue_bead.j < red_bead.j){
+                beads[0] = red_bead;
+                beads[1] = blue_bead;
+            }
+            else{
+                beads[0] = blue_bead;
+                beads[1] = red_bead;
+            }
         }
-        else{
-            beads[0] = blue_bead;
-            beads[1] = red_bead;
-        }        
+        if(mode == 1){
+            if(blue_bead.j < red_bead.j){
+                beads[0] = blue_bead;
+                beads[1] = red_bead;
+            }
+            else{
+                beads[0] = red_bead;
+                beads[1] = blue_bead;
+            }
+        }
+        if(mode == 2){
+            if(blue_bead.i < red_bead.i){
+                beads[0] = red_bead;
+                beads[1] = blue_bead;
+            }
+            else{
+                beads[0] = blue_bead;
+                beads[1] = red_bead;
+            }
+        }
+        if(mode == 3){
+            if(blue_bead.i < red_bead.i){
+                beads[0] = blue_bead;
+                beads[1] = red_bead;
+            }
+            else{
+                beads[0] = red_bead;
+                beads[1] = blue_bead;
+            }
+        }
         // END OF FIND FIRST AND SECOND
         
         int ret = -2;
@@ -124,7 +163,6 @@ class Node{
                     }
                 }
             } 
-            
         }
         return ret;
     }
@@ -141,7 +179,10 @@ class Bead{
         this.pos[0] = i; this.pos[1] = j;
         this.colorFlag = color;
     }
-    
+   
+    public String toString(){
+        return "i: "+i+" , j: "+j;
+    }
 }
 
 
