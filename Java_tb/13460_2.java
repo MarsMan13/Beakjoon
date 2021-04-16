@@ -48,24 +48,27 @@ class Main{
         }
        
         // END OF INIT
-        bfs();
+        System.out.println(bfs());
         
     }
     
-    public static void bfs(){
+    public static int bfs(){
         Queue<Node> queue = new LinkedList<>();
-        queue.add(new Node(Rrow, Rcol, Brow, Bcol, 0));
+        queue.offer(new Node(Rrow, Rcol, Brow, Bcol, 0));
         while(!(queue.isEmpty())){
             Node temp = queue.poll();
             for(int k = 0; k < 4; k++){
-                int redCursor_i = temp.i; int redCursor_j = temp.j;
-                int blueCursor_i = temp.ii; int blueCursor_j = temp.jj;
-                
-                Node newNode = new Node(temp.i, temp.j, temp.ii, temp.jj, temp.count+1);
-               
-                newNode.go(k);
+                if(10 < temp.count+1)
+                    continue;    
+                Node newNode = new Node(temp.redBall.i, temp.redBall.j, temp.blueBall.i, temp.blueBall.j, temp.count+1);
+                int ret = newNode.go(k);
+                if(0 <= ret)
+                    return ret;
+                if(ret != -1)
+                    queue.offer(newNode);
             }
         }
+        return -1;
     }
 }
 
@@ -88,8 +91,6 @@ class Node{
     }
     
     public int go(int mode){
-        Ball firstBall = null;
-        Ball secondBall = null;
         
         Ball[] balls = new Ball[2];
         
@@ -103,43 +104,30 @@ class Node{
             balls[1] = blueBall;
         }
         //END OF SET FIRST AND SECOND TARGET
-     
+    
+        int ret = -2;
         for(int i = 0; i<2; i++){
             Ball tempBall = balls[i];
-            while(Main.board[tempBall.i+xx[mode]][tempBall.j+yy[mode]] != 0){
+            while(Main.board[tempBall.j+xx[mode]][tempBall.i+yy[mode]] != 0){
                 if(i == 1){
-                    if(tempBall.i+xx[mode] == balls[0].i && tempBall.j+yy[mode] == balls[0].j)
+                    if(tempBall.j+xx[mode] == balls[0].j && tempBall.i+yy[mode] == balls[0].i)
                         break;
                 }
                 tempBall.addX(xx[mode]);
                 tempBall.addY(yy[mode]);
                 
-                if(board[tempBall.i][tempBall.j] == 2){
-                    if(tempBall.colorFlag == 0){    //tempBall is red
-                        return this.count;    
+                if(Main.board[tempBall.i][tempBall.j] == 2){
+                    if(tempBall.colorFlag == 0 && ret != -1){    //tempBall is red
+                        ret = this.count;    
+                    }
+                    else if(tempBall.colorFlag == 1){
+                        ret = -1;
                     }
                 }
             }
         }
         
-        while(Main.board[firstBall.i+xx[mode]][firstBall.j+yy[mode]] != 0){
-            firstBall.addX(xx[mode]);
-            firstBall.addY(yy[mode]);
-            if(Main.borad[firstBall.i])
-        }
-        while(Main.board[secondBall.i+xx[mode]][secondBall.j+yy[mode]] != 0 
-              && secondBall.i+xx[mode] != firstBall.i 
-              && secondBall.j+yy[mode] != firstBall.j){
-            
-            secondBall.addX(xx[mode]);
-            secondBall.addY(yy[mode]);
-        }
-        
-    }
-    
-    
-    public String toString(){
-        return "i: "+i+" j: "+j+", count: "+count;
+        return ret;
     }
     
 }
@@ -158,22 +146,22 @@ class Ball{
     }
    
     public void setX(int v){
-        i = v;
+        j = v;
         pos[0] = v;
     }
     
     public void setY(int v){
-        j = v;
+        i = v;
         pos[1] = v;
     }
     
     public void addX(int v){
-        i += v;
+        j += v;
         pos[0] += v;
     }
     
     public void addY(int v){
-        j += v;
+        i += v;
         pos[1] += v;
     }
     
