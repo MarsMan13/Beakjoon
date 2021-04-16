@@ -46,7 +46,7 @@ class Main{
                 }
             }
         }
-       
+        
         // END OF INIT
         System.out.println(bfs());
         
@@ -94,7 +94,7 @@ class Node{
         
         Ball[] balls = new Ball[2];
         
-        int indexor = mode%2;    // 0,0,1,1
+        int indexor = (mode%2+1)%2;    // 0,0,1,1
         if(redBall.pos[indexor] * reversor[mode] < blueBall.pos[indexor] * reversor[mode]){
             balls[0] = blueBall;
             balls[1] = redBall;
@@ -108,7 +108,7 @@ class Node{
         int ret = -2;
         for(int i = 0; i<2; i++){
             Ball tempBall = balls[i];
-            while(Main.board[tempBall.j+xx[mode]][tempBall.i+yy[mode]] != 0){
+            while(Main.board[tempBall.i+yy[mode]][tempBall.j+xx[mode]] != 0){
                 if(i == 1){
                     if(tempBall.j+xx[mode] == balls[0].j && tempBall.i+yy[mode] == balls[0].i)
                         break;
