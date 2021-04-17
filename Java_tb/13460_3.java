@@ -91,59 +91,18 @@ class Node{
     
     public int going(int mode){
       
-        int indexor = mode%2;
+        int indexor = mode/2;
        
         Bead[] beads = new Bead[2];
         
-        // if(blue_bead.pos[indexor] * reversor[mode] < red_bead.pos[indexor] * reversor[mode]){
-        //     beads[0] = red_bead;
-        //     beads[1] = blue_bead;
-        // }
-        // else{
-        //     beads[0] = blue_bead;
-        //     beads[1] = red_bead;
-        // }    
-        if(mode == 0){
-            if(blue_bead.i < red_bead.i){
-                beads[0] = red_bead;
-                beads[1] = blue_bead;
-            }
-            else{
-                beads[0] = blue_bead;
-                beads[1] = red_bead;
-            }
+        if(blue_bead.pos[indexor] * reversor[mode] < red_bead.pos[indexor] * reversor[mode]){
+            beads[0] = red_bead;
+            beads[1] = blue_bead;
         }
-        if(mode == 1){
-            if(blue_bead.i < red_bead.i){
-                beads[0] = blue_bead;
-                beads[1] = red_bead;
-            }
-            else{
-                beads[0] = red_bead;
-                beads[1] = blue_bead;
-            }
-        }
-        if(mode == 2){
-            if(blue_bead.j < red_bead.j){
-                beads[0] = red_bead;
-                beads[1] = blue_bead;
-            }
-            else{
-                beads[0] = blue_bead;
-                beads[1] = red_bead;
-            }
-        }
-        if(mode == 3){
-            if(blue_bead.j < red_bead.j){
-                beads[0] = blue_bead;
-                beads[1] = red_bead;
-            }
-            else{
-                beads[0] = red_bead;
-                beads[1] = blue_bead;
-            }
-        }
-        // END OF FIND FIRST AND SECOND
+        else{
+            beads[0] = blue_bead;
+            beads[1] = red_bead;
+        }    
         
         int ret = -2;
         for(int k = 0; k<2; k++){
@@ -186,18 +145,4 @@ class Bead{
         return "i: "+i+" , j: "+j;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
