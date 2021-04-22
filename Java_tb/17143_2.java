@@ -33,12 +33,13 @@ class Main{
         for(int j = 1; j<=C; j++){
             Shark.catchShark(j);
             Shark.moveSharks();
+            Shark.eatSharks();
         }
         System.out.println(Shark.totSharkM);
     }
 }
 
-class Shark implements Comparable<Shark>{
+class Shark {
     
     static ArrayList<Shark>[][] pos = null;
     
@@ -79,7 +80,7 @@ class Shark implements Comparable<Shark>{
         Shark temp = null;
         for(Shark s : sharks){
             if(s.c == i){
-                if(temp == null || (s.r < temp.c && s.alive == 1)){
+                if((temp == null || s.r < temp.r) && s.alive == 1){
                     temp = s;
                 }
             }
@@ -103,63 +104,88 @@ class Shark implements Comparable<Shark>{
             
             int steps = s.s;
             int dir = s.d;
-            int bound = 0;
             
             int new_r = s.r, new_c = s.c;
-            System.out.println("== Start ==");
-            System.out.println("new_r : "+new_r);
-            System.out.println("new_c : "+new_c);
+            int new_d = s.d;
             
-            if(1 <= new_r + steps * ii[dir] && new_r + steps * ii[dir] <= Main.R){
-                new_r += steps * ii[dir];
-            }
-            else{
-                int flag1 = steps + ii[dir] * new_r;
-                if(dir == 1){
-                    flag1 += 1;
-                }
-                else if(dir == 2){
-                    flag1 -= Main.R;
-                }
-                // System.out.println((steps + ii[dir] * new_r - Main.R * ((1+ii[dir])/2)));
-                // int checker = ((steps + ii[dir] * new_r - Main.R * ((1+ii[dir])/2)) / Main.R) % 2;
-                // int rest = (steps * ii[dir] * new_r - Main.R * ((1+ii[dir])/2)) % Main.R;
-                int checker = flag1 / Main.R % 2;
-                int rest = flag1 % Main.R;
-                
-                System.out.println("checker: "+checker);
-                System.out.println("rest: "+rest);
-                if(ii[dir] + checker == -1 || ii[dir] + checker == 2){
-                    new_r = rest;
+            
+            if(dir == 1 || dir == 2){
+                if(1 <= new_r + steps * ii[dir] && new_r + steps * ii[dir] <= Main.R){
+                    new_r += steps * ii[dir];
                 }
                 else{
-                    new_r = Main.R - rest;
+                    int flag1 = steps + ii[dir] * new_r;
+                    if(dir == 1){
+                        flag1 += 1;
+                    }
+                    else if(dir == 2){
+                        flag1 -= Main.R;
+                    }
+                    int checker = flag1 / (Main.R - 1) % 2;
+                    int rest = flag1 % (Main.R - 1);
+
+                    if(ii[dir] + checker == -1 || ii[dir] + checker == 2){
+                        new_r = rest+1;
+                    }
+                    else{
+                        new_r = Main.R - rest;
+                    }
+
+                    if(new_d == 1){
+                        if(checker == 0)
+                            new_d = 2;
+                        else
+                            new_d = 1;
+                    }
+                    else if(new_d == 2){
+                        if(checker == 0)
+                            new_d = 1;
+                        else
+                            new_d = 2;
+                    }
                 }
             }
-            
-            if(1 <= new_c + steps * jj[dir] && new_c + steps * jj[dir] <= Main.C){
-                new_c += steps * jj[dir];
-            }
-            else{
-                int checker = (steps + jj[dir] * new_c - Main.C * ((1+jj[dir])/2) / Main.C) % 2;
-                int rest = (steps + jj[dir] * new_c - Main.C * ((1+jj[dir])/2)) % Main.C;
-                
-                if(jj[dir] + checker == -1 || jj[dir] + checker == 2){
-                    new_c = rest;
+            else if(dir == 3 || dir == 4){
+                if(1 <= new_c + steps * jj[dir] && new_c + steps * jj[dir] <= Main.C){
+                    new_c += steps * jj[dir];
                 }
                 else{
-                    new_c = Main.C - rest;
+                    int flag1 = steps + jj[dir] * new_c;
+                    if(dir == 4){
+                        flag1 += 1;
+                    }
+                    else if(dir == 3){
+                        flag1 -= Main.C;
+                    }
+                    int checker = flag1 / (Main.C - 1) % 2;
+                    int rest = flag1 % (Main.C - 1);
+
+                    if(dir == 3 && checker == 1 || dir == 4 && checker == 0){
+                        new_c = rest+1;
+                    }
+                    else{
+                        new_c = Main.C - rest;
+                    }
+
+                    if(new_d == 3){
+                        if(checker == 0)
+                            new_d = 4;
+                        else
+                            new_d = 3;
+                    }
+                    else if(new_d == 4){
+                        if(checker == 0)
+                            new_d = 3;
+                        else
+                            new_d = 4;
+                    }
                 }
+                
             }
             // END OF CALC
-            
-            System.out.println("new_r : "+new_r);
-            System.out.println("new_c : "+new_c);
-            s.r = new_r; s.c = new_c;
+            s.r = new_r; s.c = new_c; s.d = new_d;
             pos[new_r][new_c].add(s);
         }
-       
-        eatSharks();
     }
     
     public static void eatSharks(){
@@ -169,56 +195,16 @@ class Shark implements Comparable<Shark>{
             for(int j = 1; j<=Main.C; j++){
                 if(pos[i][j].size() == 0)
                     continue;
+                temp = null;
                 for(Shark s : pos[i][j]){
                     if(temp == null || temp.z < s.z){
-                        temp.alive = 0;
+                        if(temp != null)
+                            temp.alive = 0;
                         temp = s;
                     }
                 }
             }
         }
     }
-    
-    
-    @Override
-    public int compareTo(Shark o){
-        if(this.r != o.r){
-            return this.r - o.r;
-        }
-        return this.c - o.c;
-    }
 }
-
-class Position implements Comparable<Position>{
-    int r, c;
-    List<Shark> list = new ArrayList<>();
-    
-    Position(int r, int c){
-        this.r = r;
-        this.c = c;
-    }
-    
-    public void addShark(Shark s){
-        list.add(s);
-    }
-    
-    public void killSharks(){
-    }
-    
-    
-    @Override
-    public int compareTo(Position o){
-        if(this.r != o.r){
-            return this.r - o.r;
-        }
-        return this.c - o.c;
-    }
-}
-
-
-
-
-
-
-
 
