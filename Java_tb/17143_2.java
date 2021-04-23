@@ -30,12 +30,13 @@ class Main{
         }
         // END OF INIT;
      
+        int tot = 0;
         for(int j = 1; j<=C; j++){
-            Shark.catchShark(j);
+            tot += Shark.catchShark(j);
             Shark.moveSharks();
             Shark.eatSharks();
         }
-        System.out.println(Shark.totSharkM);
+        System.out.println(tot);
     }
 }
 
@@ -76,19 +77,20 @@ class Shark {
         sharks[i] = newS;
     }
     
-    public static void catchShark(int i){
+    public static int catchShark(int i){
         Shark temp = null;
         for(Shark s : sharks){
-            if(s.c == i){
-                if((temp == null || s.r < temp.r) && s.alive == 1){
+            if(s.c == i && s.alive == 1){
+                if(temp == null || s.r < temp.r){
                     temp = s;
                 }
             }
         }
         if(temp != null){
             temp.alive = 0;
-            totSharkM += temp.z;
+            return temp.z;
         }
+        return 0;
     }
    
     
@@ -198,11 +200,11 @@ class Shark {
                 temp = null;
                 for(Shark s : pos[i][j]){
                     if(temp == null || temp.z < s.z){
-                        if(temp != null)
-                            temp.alive = 0;
                         temp = s;
                     }
+                    s.alive = 0;
                 }
+                temp.alive = 1;
             }
         }
     }
