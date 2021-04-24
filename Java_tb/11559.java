@@ -18,7 +18,7 @@ class Main{
 				map[i][j] = line.charAt(j-1);
 			}
 		}
-		
+	
 		//END OF INIT
 	
 		int step = 0;
@@ -36,9 +36,9 @@ class Main{
 			flag = 0;
 			for(int i = 13; 0<i; i--){
 				for(int j = 1; j<=6; j++){
-					if(map[i][j] == '.' && map[i-1][j] != 0){
+					if(map[i][j] == '.' && map[i-1][j] != '.' && map[i-1][j] != 0){
 						map[i][j] = map[i-1][j];
-						map[i-1][j] = 0;
+						map[i-1][j] = '.';
 						flag = 1;
 					}
 				}
@@ -54,9 +54,9 @@ class Main{
 		visitedMap = new int[14][8];
 		visitedMap2 = new int[14][8];
 		int retFlag = 0; 
-		int result = 0;
 		for(int i = 1; i<=12; i++){
 			for(int j = 1; j<=6; j++){
+				int result = 0;
 				if(map[i][j] != '.' && visitedMap[i][j] == 0){
 					visitedMap[i][j] = 1;
 					result += dfs(i, j, map[i][j]);	
