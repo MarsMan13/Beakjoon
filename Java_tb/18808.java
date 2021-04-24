@@ -52,16 +52,16 @@ class Main{
 						flag = 0;
 						for(int i = 0; i<currentSticker.r; i++){
 							for(int j = 0; j<currentSticker.c; j++){
-								if(map[i+head_i][j+head_j] != 0 && currentSticker.figure[i][j] != 0){
+								if(map[i+head_i][j+head_j] != 0 && (currentSticker.figure)[i][j] != 0){
 									flag = 1;
 								}
 							}
 						}	
 						if(flag == 0){
-							currentSticker.printSticker();
 							for(int i = 0; i<currentSticker.r; i++){
 								for(int j = 0; j<currentSticker.c; j++){
-									map[i+head_i][j+head_j] = currentSticker.figure[i][j];
+									if(map[i+head_i][j+head_j] == 0)
+										map[i+head_i][j+head_j] = currentSticker.figure[i][j];
 								}
 							}
 							break loop_1;
@@ -71,15 +71,12 @@ class Main{
 				currentSticker.rotate();
 			}
 		}
-		
 		int result = 0;
 		for(int i = 1; i<=N; i++){
 			for(int j = 1; j<=M; j++){
-				System.out.print(map[i][j]+" ");
 				if(map[i][j] == 1)
 					result++;
 			}
-			System.out.println();
 		}
 		System.out.println(result);
 		
@@ -110,14 +107,4 @@ class Sticker{
 		c = temp;
 		figure = figure2;
 	}
-	
-	public void printSticker(){
-		for(int i = 0; i<r; i++){
-			for(int j = 0; j<c; j++){
-				System.out.print(figure[i][j]);
-			}
-			System.out.println();
-		}
-	}
-	
 }
