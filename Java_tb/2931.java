@@ -36,11 +36,32 @@ class Main{
 	
 		// END OF INIT
 		
+		int flag2 = 0;
 		int pointer_i = M_i; int pointer_j = M_j;
 		for(int i = 0; i<4; i++){
 			if(map[M_i+ii[i]][M_j+jj[i]] != null){
 				pointer_i = M_i + ii[i];
 				pointer_j = M_j + jj[i];
+				flag2 = 1;
+			}
+		}
+		
+		if(flag2 == 0){
+			int temp = 0;
+			
+			temp = M_i;
+			M_i = Z_i;
+			Z_i = temp;
+			temp = M_j;
+			M_j = Z_j;
+			Z_j = temp;
+			pointer_i = M_i; pointer_j = M_j;
+			for(int i = 0; i<4; i++){
+				if(map[M_i+ii[i]][M_j+jj[i]] != null){
+					pointer_i = M_i + ii[i];
+					pointer_j = M_j + jj[i];
+					flag2 = 1;
+				}
 			}
 		}
 		
