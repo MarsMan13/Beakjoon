@@ -6,8 +6,10 @@ class Main{
 	
 	static int R, C;
 	static Room[][] map = null;
-	static int M_i, M_j;
+	static int[][] visited = null;
+	static int M_i, M_j	;
 	static int Z_i, Z_j;
+	
 	
 	public static void main(String[] args) throws IOException {
 		
@@ -16,6 +18,7 @@ class Main{
 		R = Integer.parseInt(st.nextToken());
 		C = Integer.parseInt(st.nextToken());
 		map = new Room[R+2][C+2];
+		visited = new int[R+2][C+2];
 		
 		for(int i = 1; i <= R; i++){
 			String tempS = bf.readLine();
@@ -29,8 +32,10 @@ class Main{
 					Z_i = i; Z_j = j;
 					map[i][j] = new Room(i, j, '+');
 				}
-				else if(tempC != '.')
+				else if(tempC != '.'){
 					map[i][j] = new Room(i, j, tempC);	
+					visited[i][j] = 1;
+				}
 			}
 		}
 	
@@ -86,13 +91,21 @@ class Main{
 	
 	static int def1(Pipe pointer_pipe, int flag){
 
-		if(pointer_pipe.i == Z_i && pointer_pipe.j == Z_j)
+		if(pointer_pipe.i == Z_i && pointer_pipe.j == Z_j){
+			for(int i = 1; i<=R; i++){
+				for(int j = 1; j<=C; j++){
+					if(visited[i][j] == 1)
+						return 0;
+				}
+			}
 			return 1;
-	
+		}
+		pointer_pipe.visitRoom();
 		Pipe next_pipe = pointer_pipe.getNextPipe();
 
 		if(next_pipe == null){
 			if(flag == 1){
+				pointer_pipe.unvisitRoom();
 				return 0;
 			}
 			int ret = 0;
@@ -112,7 +125,11 @@ class Main{
 				}
 			}	
 		}
-		return def1(next_pipe, flag);
+		if(def1(next_pipe, flag) == 0){
+			pointer_pipe.unvisitRoom();
+			return 0;
+		}
+		return 1;
 	}
 
 	static char[] blocks = {'|', '-', '+', '1', '2', '3', '4'};
@@ -231,4 +248,11 @@ class Pipe{
 		return 0;
 	}
 
+	void visitRoom(){
+		Main.visited[i][j] = 0;
+	}
+	
+	void unvisitRoom(){
+		Main.visited[i][j] = 1;
+	}
 } 
