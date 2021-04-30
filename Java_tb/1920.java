@@ -41,7 +41,6 @@ class Main{
 				}
 				else if(Ns[i] == Ms[ii].value){
 					Ms[ii].flag = 1;
-					i++;
 					ii++;
 				}
 				else{
