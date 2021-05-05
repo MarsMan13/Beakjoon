@@ -21,13 +21,12 @@ class Main{
 			for(int c = 0; c < numCom; c++){
 				st = new StringTokenizer(bf.readLine());
 				String command = st.nextToken();
-				int value = Integer.parseInt(st.nextToken());
 				
 				if(command.equals("I")){
-					queue.insert(value);
+					queue.insert(Long.parseLong(st.nextToken()));
 				}
 				else if(command.equals("D")){
-					queue.delete(value);
+					queue.delete(Integer.parseInt(st.nextToken()));
 				}
 			}
 			if(queue.size < 1){
@@ -107,11 +106,12 @@ class DualPriorityQueue{
 	}
 	
 
-	public void insert(int value){
+	public void insert(long value){
 		size++;
 		Dipole dipole1 = new Dipole(value, size);
 		Dipole dipole2 = new Dipole(value, size);
 		Dipole.makeDipole(dipole1, dipole2);
+		
 		heap_straight[size] = dipole1;
 		heap_reverse[size] = dipole2;
 		
@@ -136,23 +136,20 @@ class DualPriorityQueue{
 				parent = index/2;
 			}	
 		}
-		
 	}
-	
-	
 }
 
 class Dipole{
 	
-	int n = 0;
+	long n = 0;
 	int index = 0;
 	Dipole friend = null;
 	
-	Dipole(int n){
+	Dipole(long n){
 		this.n = n;
 	}
 	
-	Dipole(int n, int index){
+	Dipole(long n, int index){
 		this.n = n;
 		this.index = index;
 	}
@@ -161,7 +158,6 @@ class Dipole{
 		d1.friend = d2;
 		d2.friend = d1;
 	}
-	
 }
 
 
