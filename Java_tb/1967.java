@@ -14,6 +14,7 @@ class Main{
 	
 		n = Integer.parseInt(bf.readLine());
 		nodes = new Node[n+1];	
+		nodes[1] = new Node(1);
 		for(int i = 0; i<n-1; i++){
 			StringTokenizer st = new StringTokenizer(bf.readLine());
 			int parent = Integer.parseInt(st.nextToken());
@@ -30,21 +31,19 @@ class Main{
 	
 		dfs(1);
 		
-		int max = -1;
+		int max = 0;
 		for(int i = 1; i<=n; i++){
 			Node curNode = nodes[i];
 			if(curNode.child.size() == 0)
 				continue;
 			else if(curNode.child.size() == 1){
-				System.out.println("index: "+curNode.index+", max: "+curNode.childLength.get(0));
-				if(max == -1 || max < curNode.childLength.get(0))
+				if(max < curNode.childLength.get(0))
 					max = curNode.childLength.get(0);
 			}
 			else{
 				Collections.sort(curNode.childLength, Collections.reverseOrder());
-				if(max == -1 || max < curNode.childLength.get(0) + curNode.childLength.get(1))
+				if(max < curNode.childLength.get(0) + curNode.childLength.get(1))
 					max = curNode.childLength.get(0) + curNode.childLength.get(1);
-				System.out.println("index: "+curNode.index+", max: "+curNode.childLength.get(0) + curNode.childLength.get(1));
 			}
 		}
 		System.out.println(max);
@@ -55,25 +54,21 @@ class Main{
 	
 		int max = 0;
 		for(int i = 0; i<curNode.child.size(); i++){
-			curNode.childLength.add(
+			curNode.childLength.set(
 				i, dfs(curNode.child.get(i).index) + curNode.child.get(i).cost
-			);		
+			);
 			if(max < curNode.childLength.get(i))
 				max = curNode.childLength.get(i);
-		}
-		for(int i : curNode.childLength){
-			System.out.println(i);
 		}
 		return max;
 	}
 }
 
 class Node{
-	int answer = 0;
 	int index;
 	int cost = 0;
-	List<Node> child = new ArrayList<>(2);
-	List<Integer> childLength = new ArrayList<>(2);
+	List<Node> child = new ArrayList<>();
+	List<Integer> childLength = new ArrayList<>();
 	Node(int index){
 		this.index = index;
 	}
