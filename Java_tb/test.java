@@ -6,14 +6,17 @@ class Main{
 
     public static void main(String[] args){
 
-		PriorityQueue<Integer> pq = new PriorityQueue<>();
-		pq.add(3);
-		pq.add(1);
-		pq.add(2);
-		while(!(pq.isEmpty())){
-			System.out.println(pq.poll());
-		}
 		
+		Deque<Integer> queue = new ArrayDeque<>();
+		queue.offerLast(1);
+		queue.offerLast(3);
+		queue.offerLast(2);
+		queue.offerLast(4);
+		
+		System.out.println(queue.pollFirst());
+		System.out.println(queue.pollFirst());
+		System.out.println(queue.pollFirst());
+		System.out.println(queue.pollFirst());
 	}
 }
 
