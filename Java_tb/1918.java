@@ -23,15 +23,17 @@ class Main{
 					break;
 				case '*':
 				case '/':
+					while(!(stack.isEmpty()) && (stack.peek() == '*' || stack.peek() == '/')){
+						char tempTarget = stack.pop();
+						sb.append(tempTarget);
+					}
 					stack.push(target);
 					break;
 				case '+':
 				case '-':
-					while(!(stack.isEmpty()) && (stack.peek() != '+' || stack.peek() != '-' || stack.peek() != '(')){
+					while(!(stack.isEmpty()) && stack.peek() != '('){
 						char tempTarget = stack.pop();
-						if(tempTarget != '('){
-							sb.append(tempTarget);
-						}
+						sb.append(tempTarget);
 					}
 					stack.push(target);
 					break;
