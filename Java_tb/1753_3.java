@@ -45,9 +45,9 @@ class Main{
 			int curCost = pointer.cost;
 			for(Edge e : pointer.edges){
 				if(vs[e.to].visited == 0 && curCost + e.cost < vs[e.to].cost){
-					pq.remove(vs[e.to]);
+					pq.remove(vs[e.to]);				// @@@@@@@@@@@@@@@@@@@@@@
 					vs[e.to].cost = curCost + e.cost;
-					pq.offer(vs[e.to]);
+					pq.offer(vs[e.to]);					// @@@@@@@@@@@@@@@@@@@@@@
 				}
 			}
 			

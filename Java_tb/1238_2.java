@@ -4,7 +4,7 @@ import java.io.BufferedWriter;
 import java.io.OutputStreamWriter;
 import java.util.PriorityQueue;
 
-public class Main{
+class Main{
 	public static final int INF = 1000*100+1;
 	public static void main(String[] args) throws Exception {
 		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
