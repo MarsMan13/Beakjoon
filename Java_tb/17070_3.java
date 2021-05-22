@@ -34,36 +34,19 @@ class Main{
 		mapType1[1][2] = 1;
 		
 		// END OF INIT
-		for(int s = 3; s<=N; s++){
-			for(int i = 1; i<s; i++){
-				int j = s;
-				// CORE
+		for(int i = 1; i<=N; i++){
+			for(int j = 1; j<=N; j++){
 				if(map[i][j] == 1)
 					continue;
-				mapType1[i][j] = (mapType1[i][j-1] + mapType3[i][j-1]);
-				mapType2[i][j] = (mapType2[i-1][j] + mapType3[i-1][j]);
-				if(map[i-1][j] == 0 && map[i][j-1] == 0){
-					mapType3[i][j] = (mapType1[i-1][j-1] + mapType2[i-1][j-1] + mapType3[i-1][j-1]);
-				}
-				// END OF CORE
-			}
-			for(int j = 1; j<=s; j++){
-				int i = s;
-				// CORE
-				if(map[i][j] == 1)
-					continue;
-				mapType1[i][j] = (mapType1[i][j-1] + mapType3[i][j-1]);
-				mapType2[i][j] = (mapType2[i-1][j] + mapType3[i-1][j]);
-				if(map[i-1][j] == 0 && map[i][j-1] == 0){
-					mapType3[i][j] = (mapType1[i-1][j-1] + mapType2[i-1][j-1] + mapType3[i-1][j-1]);
-				}
-				
-				// END OF CORE
+				if(map[i-1][j] == 0 && map[i][j-1] == 0)
+					mapType3[i][j] = mapType1[i-1][j-1] + mapType2[i-1][j-1] + mapType3[i-1][j-1];
+				mapType1[i][j] = mapType1[i][j-1] + mapType3[i][j-1];
+				mapType2[i][j] = mapType2[i-1][j] + mapType3[i-1][j];
 			}
 		}
+		
 		System.out.println(mapType1[N][N] + mapType2[N][N] + mapType3[N][N]);
 	}
 }
-
 
 

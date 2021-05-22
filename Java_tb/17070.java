@@ -2,7 +2,7 @@ import java.util.*;
 import java.io.*;
 
 
-class Main{
+class Main17070{
 	
 	
 	public static void main(String[] args) throws IOException {
@@ -19,11 +19,14 @@ class Main{
 		
 		// 
 
+		int map[][] = new int[Pair.N+1][Pair.N+1];
 		int count = 0;
 		Queue<Pair> queue = new LinkedList<>();
 		queue.offer(new Pair(0, 1, 2));
 		while(!(queue.isEmpty())){
 			Pair temp = queue.poll();
+			if(temp.type == 0)
+				map[temp.i][temp.j]++;
 			if(temp.i == Pair.N && temp.j == Pair.N){
 				count++;
 				continue;
@@ -36,6 +39,12 @@ class Main{
 			}
 		}
 	
+		for(int i = 1; i<=Pair.N; i++){
+			for(int j = 1; j<=Pair.N; j++){
+				System.out.print(map[i][j]+" ");
+			}
+			System.out.println();
+		}
 		System.out.println(count);
 	}
 	
