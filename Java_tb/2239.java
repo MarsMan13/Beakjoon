@@ -15,13 +15,14 @@ class Main{
 		for(int i = 1; i<=9; i++){
 			String line = bf.readLine();
 			for(int j = 1; j<=9; j++){
-				board[i][j] = (int)line.charAt(j-1);
+				board[i][j] = ((int)line.charAt(j-1) - (int)'0');
 			}
 		}
-		
+
 		def1();
-		
-		System.out.println(sb.toString());	
+
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+		bw.write(sb.toString());	bw.flush();	bw.close();	
 	}
 	
 	public static void def1(){
@@ -32,12 +33,9 @@ class Main{
 			for(int j = 1; j<=9; j++){
 				if(board[i][j] == 0){
 					//
-					
-					if(i == 1 && j == 2)
-						System.out.println("check");
-					
+					flag = 1;
 					for(int k = 1; k<=9; k++)
-						possible[board[i][k]] = possible[board[j][k]] = 0;
+						possible[board[i][k]] = possible[board[k][j]] = 0;
 					//
 					int area_i = (i-1)/3 * 3 + 1;
 					int area_j = (j-1)/3 * 3 + 1;
@@ -47,8 +45,6 @@ class Main{
 						}
 					}
 					// END OF CHECK POSSIBLE
-					if(i == 1 && j == 2)
-						System.out.println(possible);
 					for(int p = 1; p<=9; p++){
 						if(possible[p] != 0){
 							board[i][j] = possible[p];
@@ -68,6 +64,5 @@ class Main{
 				sb.append("\n");
 			}
 		}
-		
 	}
 }
