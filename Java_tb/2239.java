@@ -20,12 +20,9 @@ class Main{
 		}
 
 		def1();
-
-		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-		bw.write(sb.toString());	bw.flush();	bw.close();	
 	}
 	
-	public static void def1(){
+	public static void def1() throws IOException {
 		int flag = 0;
 		int[] possible = new int[]{0,1,2,3,4,5,6,7,8,9};
 		outer:	
@@ -63,6 +60,9 @@ class Main{
 					sb.append(board[i][j]);
 				sb.append("\n");
 			}
+			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+			bw.write(sb.toString());	bw.flush();	bw.close();	
+			System.exit(0);
 		}
 	}
 }
