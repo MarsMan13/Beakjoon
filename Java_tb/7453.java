@@ -61,7 +61,7 @@ class Main{
 			before2 = newCD;
 		}
 		
-		BigInteger ret = new BigInteger("0");
+		long ret = 0L;
 		int i = 0;	int j = CD2.size() - 1;
 		for(; i<AB2.size(); i++){
 			for(; 0 <= j; j--){
@@ -72,7 +72,7 @@ class Main{
 			}
 			
 			if(j != -1 && AB2.get(i).v + CD2.get(j).v == 0){
-				ret = ret.add(BigInteger.valueOf(AB2.get(i).count).multiply(BigInteger.valueOf(CD2.get(j).count)));
+				ret += 1L * AB2.get(i).count * CD2.get(j).count;
 			}
 		}
 		System.out.println(ret);
