@@ -7,8 +7,8 @@ class Main{
 	static int N, M;
 	static int[] mm = null;
 	static int[] cc = null;
-	static TreeSet[] dp = null;
-	static final MAX = 10000000;
+	static TreeMap[] dp = null;
+	static final int MAX = 10000000;
 	
 	public static void main(String[] args) throws IOException {
 		
@@ -18,9 +18,9 @@ class Main{
 		N = Integer.parseInt(st.nextToken());	M = Integer.parseInt(st.nextToken());
 		mm = new int[N];
 		cc = new int[N];
-		dp = new TreeSet<Integer, Integer>[N];
+		dp = new TreeMap[N];
 		for(int i = 0; i<N; i++){
-			dp[i] = new TreeSet<>();
+			dp[i] = new TreeMap<Integer, Integer>();
 		}
 		
 		st = new StringTokenizer(bf.readLine());
@@ -39,17 +39,18 @@ class Main{
 		
 		if(mass <= 0)
 			return 0;
-		if(i == 0){
-			if()
-		}
+		if(i == -1)
+			return MAX + 1;
 		
-		if(!dp[i].containsKey(mass)){
+		if(!dp[i].containsKey(new Integer(mass))){
 			int ret1 = def(i-1, mass-mm[i]) + cc[i];
 			int ret2 = def(i-1, mass);
-			if()
+			int ret = ret1;
+			if(ret2 < ret)
+				ret = ret2;
 			dp[i].put(mass, ret);
 		}
-		return dp[i].get(mass);	
+		return (Integer)dp[i].get(mass);	
 	}
 }
 
