@@ -15,6 +15,8 @@ class Main{
 		StringTokenizer st = new StringTokenizer(bf.readLine());
 		int T = Integer.parseInt(st.nextToken());
 		
+		StringBuilder sb = new StringBuilder();
+		
 		for(int t = 0; t<T; t++){
 			st = new StringTokenizer(bf.readLine());
 			int n = Integer.parseInt(st.nextToken());
@@ -38,8 +40,10 @@ class Main{
 					ret++;
 				}
 			}
-			System.out.println(ret);
+			sb.append(ret);	sb.append("\n");
 		}
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+		bw.write(sb.toString());	bw.flush();	bw.close();
 	}
 	
 	public static int dfs(int index, int bit){
@@ -52,9 +56,8 @@ class Main{
 			return results[index] = 0;
 		}
 		int ret = dfs(arrow[index], bit);
-		if(index == ret){
-			results[index] = ret;
-			return 0;
+		if(arrow[index] == ret){
+			return results[index] = 0;
 		}
 		return results[index] = ret;
 	}
