@@ -21,20 +21,22 @@ class Main{
 		//
 		Collections.sort(list);
 		
-		Pair cur = list.get(0);
-		list.remove(0);
+		Pair cur = list.remove(0);
 		Collections.sort(list, new PairComparator(cur));
 		Stack<Pair> stack = new Stack<>();
 		stack.push(cur);
 		for(Pair p : list){
 			if(2 <= stack.size()){
 				Pair firstOutLastIn = stack.pop();
-				Pair LastOutFirstIn = stack.pop();
-		
+				Pair lastOutFirstIn = stack.pop();
+	
+				System.out.println(lastOutFirstIn);
+				System.out.println(firstOutLastIn);
+				System.out.println(p);
 				
-				long ret = Pair.CCW(LastOutFirstIn, firstOutLastIn, p);
+				long ret = Pair.CCW(lastOutFirstIn, firstOutLastIn, p);
 				
-				stack.push(LastOutFirstIn);
+				stack.push(lastOutFirstIn);
 				stack.push(firstOutLastIn);
 				
 				if(0 < ret)
@@ -49,6 +51,9 @@ class Main{
 		}
 		
 		System.out.println(stack.size());
+		while(!(stack.isEmpty())){
+			System.out.println(stack.pop());
+		}
 	}
 }
 
@@ -57,6 +62,10 @@ class Pair implements Comparable<Pair>{
 	
 	static long CCW(Pair p1, Pair p2, Pair p3){
 		return 1L * (p2.i - p1.i)*(p3.j - p2.j) - (p3.i - p2.i)*(p2.j - p1.j);
+	}
+	
+	static long CCW2(Pair p1, Pair p2, Pair p3){
+		return 1L * (p2.i - p1.i)*(p3.j - p1.j) - (p3.i - p1.i)*(p2.j - p1.j);
 	}
 	
 	int i, j;
@@ -78,7 +87,7 @@ class Pair implements Comparable<Pair>{
 	
 	@Override
 	public String toString(){
-		return "i: "+this.i+", j: "+this.j;
+		return "i: "+i+", j: "+j;
 	}
 }
 
@@ -92,32 +101,22 @@ class PairComparator implements Comparator<Pair>{
 	
 	@Override
 	public int compare(Pair p1, Pair p2){
-		long aboutP1 = 1L * (p2.i - root.i) * (p1.j - root.j);
-		long aboutP2 = 1L * (p1.i - root.i) * (p2.j - root.j);
-		if(0 <= aboutP1 && 0 <= aboutP2){
-			long ret = aboutP1 - aboutP2;
-			if(ret < 0)
-				return -1;
-			else if(0 < ret)
-				return 1;
-			else
-				return 0;
-		}
-		else if(aboutP1 < 0 && aboutP2 < 0){
-			long ret = aboutP2 - aboutP1;
-			if(ret < 0)
-				return -1;
-			else if(0 < ret)
-				return 1;
-			else
-				return 0;
-		}
-		else if(aboutP1 < 0 && 0 <= aboutP2){
-			return 1;
-		}
-		else if( 0<= aboutP1 && aboutP2 < 0){
+		long ret = Pair.CCW2(root, p1, p2);
+		if(0 < ret)
 			return -1;
-		}
+		else if(ret < 0)
+			return 1;
+		long distanceP1 = (p1.i - root.i)*(p1.i - root.i) + (p1.j - root.j) * (p1.j - root.j);
+		long distanceP2 = (p2.i - root.i)*(p2.i - root.i) + (p2.j - root.j) * (p2.j - root.j);
+	
+		if(distanceP1 < distanceP2)
+			return -1;
+		else if(distanceP1 > distanceP2)
+			return 1;
 		return 0;
 	}
 }
+
+
+
+

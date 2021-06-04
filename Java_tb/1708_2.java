@@ -31,7 +31,6 @@ class Main{
 				Pair firstOutLastIn = stack.pop();
 				Pair LastOutFirstIn = stack.pop();
 		
-				
 				long ret = Pair.CCW(LastOutFirstIn, firstOutLastIn, p);
 				
 				stack.push(LastOutFirstIn);
@@ -41,7 +40,18 @@ class Main{
 					stack.push(p);
 				else{
 					stack.pop();
+					//
+					if(stack.size() >= 2){
+						Pair firstOutLastIn2 = stack.pop();
+						Pair LastOutFirstIn2 = stack.pop();
+						long ret2 = Pair.CCW(LastOutFirstIn2, firstOutLastIn2, p);
+						stack.push(LastOutFirstIn2);
+						stack.push(firstOutLastIn2);
+						if(ret2 <= 0)
+							stack.pop();
+					}
 					stack.push(p);
+					//
 				}
 			}
 			else
