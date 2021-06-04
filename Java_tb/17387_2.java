@@ -22,15 +22,12 @@ class Main{
 		long ret2 = line1.CCW(line2.p2);
 		long ret3 = line2.CCW(line1.p1);
 		long ret4 = line2.CCW(line1.p2);
+		
 		if(ret1*ret2 == 0 && ret3*ret4 == 0){
 			line1.sortOwnPair();
 			line2.sortOwnPair();
-			int flag1 = line1.p1.positionCheck(line2.p2);
-			int flag2 = line1.p2.positionCheck(line2.p1);
-			if(line1.p1.equals(line2.p1) || line1.p2.equals(line2.p2)
-			  || line1.p1.equals(line2.p2) || line1.p2.equals(line2.p1))
-				System.out.println(1);
-			else if(flag1 * flag2 < 0)
+		
+			if(line1.p1.compareTo(line2.p2) <=0 && line2.p1.compareTo(line1.p2) <= 0)
 				System.out.println(1);
 			else
 				System.out.println(0);
@@ -50,12 +47,7 @@ class Line{
 	}
 	
 	public void sortOwnPair(){
-		int flag = 0;
-		if(p2.j < p1.j)
-			flag = 1;
-		else if(p2.j == p1.j && p2.i < p1.i)
-			flag = 1;
-		
+		int flag = p1.compareTo(p2);
 		if(flag == 1){
 			Pair temp = p1;
 			p1 = p2;
@@ -64,40 +56,27 @@ class Line{
 	}
 	
 	public long CCW(Pair p3){
-		return (p3.i - p1.i)*(p2.j - p1.j) - (p2.i - p1.i)*(p3.j - p1.j);
-	}
-	
-	@Override
-	public String toString(){
-		return "Point1: "+this.p1.toString() +" / " + "Point2: "+this.p2.toString();
+		return 1L*(p3.i - p1.i)*(p2.j - p1.j) - 1L*(p2.i - p1.i)*(p3.j - p1.j);
 	}
 }
 
 
-class Pair{
+class Pair implements Comparable<Pair>{
 	long i, j;
 	
 	Pair(long i, long j){
 		this.i = i;	this.j = j;
 	}
 	
-	public int positionCheck(Pair p){
-		if(p.i == this.i && p.j == this.j)
+	@Override
+	public int compareTo(Pair p){
+		if(this.i == p.i && this.j == p.j)
 			return 0;
-		if(p.j < this.j)
-			return 1;
-		if(p.j == this.j && p.i < this.i)
-			return 1;
-		return -1;
-	}
-
-	@Override
-	public boolean equals(Object p){
-		return this.i == ((Pair)p).i && this.j == ((Pair)p).j;
-	}
-	
-	@Override
-	public String toString(){
-		return "i: "+this.i + ", " + this.j;
+		if(this.i < p.i)
+			return -1;
+		if(this.i == p.i && this.j < p.j)
+			return -1;
+		return 1;
+		
 	}
 }
