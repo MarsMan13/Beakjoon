@@ -27,33 +27,29 @@ class Main{
 		stack.push(cur);
 		for(Pair p : list){
 			if(2 <= stack.size()){
-				Pair firstOutLastIn = stack.pop();
-				Pair lastOutFirstIn = stack.pop();
-	
-				System.out.println(lastOutFirstIn);
-				System.out.println(firstOutLastIn);
-				System.out.println(p);
-				
-				long ret = Pair.CCW(lastOutFirstIn, firstOutLastIn, p);
-				
-				stack.push(lastOutFirstIn);
-				stack.push(firstOutLastIn);
-				
-				if(0 < ret)
-					stack.push(p);
-				else{
-					stack.pop();
-					stack.push(p);
+				while(2 <= stack.size()){
+					Pair firstOutLastIn = stack.pop();
+					Pair lastOutFirstIn = stack.pop();
+
+					long ret = Pair.CCW(lastOutFirstIn, firstOutLastIn, p);
+
+					stack.push(lastOutFirstIn);
+					stack.push(firstOutLastIn);
+
+					if(0 < ret){
+						break;
+					}
+					else{
+						stack.pop();
+					}
 				}
+				stack.push(p);
 			}
 			else
 				stack.push(p);
 		}
 		
 		System.out.println(stack.size());
-		while(!(stack.isEmpty())){
-			System.out.println(stack.pop());
-		}
 	}
 }
 
@@ -61,11 +57,11 @@ class Main{
 class Pair implements Comparable<Pair>{
 	
 	static long CCW(Pair p1, Pair p2, Pair p3){
-		return 1L * (p2.i - p1.i)*(p3.j - p2.j) - (p3.i - p2.i)*(p2.j - p1.j);
+		return 1L * (p2.i - p1.i)*(p3.j - p2.j) - 1L*(p3.i - p2.i)*(p2.j - p1.j);
 	}
 	
 	static long CCW2(Pair p1, Pair p2, Pair p3){
-		return 1L * (p2.i - p1.i)*(p3.j - p1.j) - (p3.i - p1.i)*(p2.j - p1.j);
+		return 1L * (p2.i - p1.i)*(p3.j - p1.j) - 1L*(p3.i - p1.i)*(p2.j - p1.j);
 	}
 	
 	int i, j;
@@ -106,8 +102,9 @@ class PairComparator implements Comparator<Pair>{
 			return -1;
 		else if(ret < 0)
 			return 1;
-		long distanceP1 = (p1.i - root.i)*(p1.i - root.i) + (p1.j - root.j) * (p1.j - root.j);
-		long distanceP2 = (p2.i - root.i)*(p2.i - root.i) + (p2.j - root.j) * (p2.j - root.j);
+		
+		long distanceP1 =  1L * (p1.i - root.i)*(p1.i - root.i) + 1L*(p1.j - root.j) * (p1.j - root.j);
+		long distanceP2 = 1L * (p2.i - root.i)*(p2.i - root.i) + 1L*(p2.j - root.j) * (p2.j - root.j);
 	
 		if(distanceP1 < distanceP2)
 			return -1;
