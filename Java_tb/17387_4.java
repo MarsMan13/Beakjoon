@@ -1,3 +1,4 @@
+
 import java.util.*;
 
 
@@ -28,9 +29,6 @@ class Main{
 				p3 = p4;
 				p4 = temp;
 			}
-			System.out.println(p1.i+" "+p1.j+" / " +p2.i+" "+p2.j);
-			System.out.println(p3.i+" "+p3.j+" / " +p4.i+" "+p4.j);
-			
 			if(p1.equals(p4) || p2.equals(p3))
 				System.out.println(1);
 			else if(p2.compareTo(p3) != p1.compareTo(p4))
