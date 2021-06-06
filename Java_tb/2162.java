@@ -78,8 +78,8 @@ class Main{
 	}
 
 	static void union(int x, int y){
-		x = parent[x];
-		y = parent[y];
+		x = find(x);
+		y = find(y);
 		
 		if(x == y)
 			return;
