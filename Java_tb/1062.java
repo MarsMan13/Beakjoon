@@ -46,7 +46,6 @@ class Main{
 		
 		if(26 < index)
 			return;
-		
 		if(Long.bitCount(set) == K){
 			def1(set);
 			return;
