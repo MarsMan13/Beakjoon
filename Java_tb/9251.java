@@ -41,23 +41,28 @@ class Main{
 			for(int j = 0; j<len2; j++){
 				int ret1 = 0;
 				int ret2 = 0;
-				if(0<=i-1 && 0<=j-1){
-					ret1 = dp[i-1][j-1];
+				// ret1
+				if(0<=i-1){
+					ret1 = dp[i-1][j];
 				}
-				//
+				
+				// ret2
 				int tempC = input1.charAt(i) - 'A';
 				int tempJ = dp2[tempC][j];
 				if(tempJ != -1){
 					ret2 = 1;
-					if(0 <= i-1)
-						ret2 += dp[i-1][tempJ];
+					if(0 <= i-1 && 0 <= tempJ-1)
+						ret2 += dp[i-1][tempJ-1];
 				}
 				
+				// 	
 				dp[i][j] = Math.max(ret1, ret2);
 				
 				if(max < dp[i][j])
 					max = dp[i][j];
+				// System.out.print(dp[i][j] +" ");
 			}
+			// System.out.println();
 		}
 	
 		System.out.println(max);
