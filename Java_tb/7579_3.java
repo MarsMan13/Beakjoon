@@ -26,14 +26,24 @@ class Main{
 	
 		for(int i = 0; i<N; i++){
 			for(int j = 0; j<=M; j++){
-				int ret1 = apps[i].c;
-				if(0 <= j-apps[i].m)
-					ret1 += dp[i][j-apps[i].m];
-				int ret2 = dp[i-1][j];
-				
+				int ret1 = -1;
+				int ret2 = -1;
+				if(0 <= i-1)
+					ret1 = dp[i-1][j];
+				if(j <= apps[i].m)
+					ret2 = apps[i].c;
+				else if(0<=i-1 && 0<=dp[i-1][j-apps[i].m]){
+					ret2 = apps[i].c + dp[i-1][j-apps[i].m];
+				}
+				if(0<=ret1 && 0<=ret2)
+					dp[i][j] = Math.min(ret1, ret2);
+				else if(0<=ret1)
+					dp[i][j] = ret1;
+				else
+					dp[i][j] = ret2;
 			}
 		}
-		
+		System.out.println(dp[N-1][M]);
 	}
 }
 
