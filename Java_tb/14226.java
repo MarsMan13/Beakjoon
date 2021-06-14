@@ -28,6 +28,7 @@ class Main{
 			int minor = 1;
 			for(int j = i-1; i/2<j; j--){
 				if(dp[i] + minor < dp[j]){
+					System.out.println("check1");
 					dp[j] = dp[i] + minor;
 				}
 				minor++;
