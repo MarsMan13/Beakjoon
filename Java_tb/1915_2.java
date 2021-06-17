@@ -27,41 +27,18 @@ class Main{
 		}
 		//
 		int[][] dp = new int[n+2][m+2];
+		int maxLen = 0;
 		
-		for(int j = 1; j<=m; j++){
-			int temp = 0;
-			for(int i = n; 1<=i; i--){
-				if(map[i][j] == 0)
-					temp = 0;
-				temp += map[i][j];
-				dp[i][j] = temp;
+		for(int i = 1; i<=n; i++){
+			for(int j = 1; j<=m; j++){
+				if(map[i][j] == 1){
+					int min = Math.min(dp[i-1][j-1], Math.min(dp[i-1][j], dp[i][j-1]));
+					dp[i][j] = min+1;
+					if(maxLen < dp[i][j])	maxLen = dp[i][j];
+				}	
 			}
 		}
 		//
-		
-		int maxSize = 0;
-		for(int i = 1; i<=n; i++){
-			for(int j = 1; j<=m; j++){
-				int counter = 0;
-				int min = 1000000;
-				for(int k = j; k<=m; k++){
-					
-					if(map[i][k] == 0){
-						break;
-					}
-					//
-					counter++;
-					min = Math.min(min, dp[i][k]);
-					int tempSize = Math.min(counter, min);
-					tempSize *= tempSize;
-					if(maxSize < tempSize)
-						maxSize = tempSize;
-					
-				}
-			}
-		}
-		
-		System.out.println(maxSize);
+		System.out.println(maxLen * maxLen);
 	}
 }
-
