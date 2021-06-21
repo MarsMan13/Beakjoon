@@ -25,32 +25,29 @@ class Main{
 		//
 		int min = MAX;
 		for(int s = 0; s<3; s++){
-			int[] dp = new int[N+1][3];	
+			int[][] dp = new int[N+1][3];	
 			for(int i = 1; i<=N; i++)	dp[i][0] = dp[i][1] = dp[i][2] = MAX;
 			dp[1][s] = data[1][s];
-			int before = s;
 			for(int i = 2; i<N; i++){
-				System.out.println(before);
 				for(int j = 0; j<3; j++){
-					if(before == j)
-						continue;
-					if(dp[i-1] + data[i][j] < dp[i]){
-						dp[i] = dp[i-1] + data[i][j];
-						before = j;
+					for(int b = 0; b<3; b++){
+						if(j == b)	continue;
+						if(dp[i-1][b] + data[i][j] < dp[i][j])
+							dp[i][j] = dp[i-1][b] + data[i][j];
 					}
 				}
 			}
 			// i == N;
 			for(int j = 0; j<3; j++){
-				if(j == before || j == s)
-					continue;
-				if(dp[N-1] + data[N][j] < dp[N]){
-					dp[N] = dp[N-1] + data[N][j];
-					before = j;
+				for(int b = 0; b<3; b++){
+					if(j == s || j == b)	continue;
+					if(dp[N-1][b] + data[N][j] < dp[N][j])
+						dp[N][j] = dp[N-1][b] + data[N][j];
 				}
 			}
-			if(dp[N] < min)
-				min = dp[N];
+			for(int j = 0; j<3; j++)
+				if(dp[N][j] < min)
+					min = dp[N][j];
 		}
 		System.out.println(min);
 	}
