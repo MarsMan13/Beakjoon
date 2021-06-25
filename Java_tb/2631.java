@@ -11,11 +11,7 @@ class Main{
 		
 		
 		BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
-		StringTokenizer st = new StringTokenizer(bf.readLine());
-		N = Integer.parseInt(st.nextToken());
-		
-		
-		
+		N = Integer.parseInt(bf.readLine());
 		
 		
 	}
