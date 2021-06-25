@@ -1,7 +1,6 @@
 import java.util.*;
 import java.io.*;
 
-
 class Main{
 
 	static int N;
@@ -33,15 +32,15 @@ class Main{
 		}
 		P = Integer.parseInt(bf.readLine());
 		Arrays.fill(dp, -1);
-		System.out.println(dfs(cur, 0));
+		System.out.println(dfs(cur));
 	}
 	
-	public static int dfs(int cur, int cost){
+	public static int dfs(int cur){
 		if(dp[cur] != -1){
-			return cost + dp[cur];
+			return dp[cur];
 		}
 		if(P<=Integer.bitCount(cur)){
-			return cost;
+			return 0;
 		}
 			
 		int result = -1; 
@@ -50,14 +49,15 @@ class Main{
 			int min = 500;
 			for(int j = 1; j<=N; j++){
 				if(((cur & (1 << j)) == 0))	continue;
-				if(pp[i][j] < min)			min = pp[i][j];
+				if(pp[j][i] < min)			min = pp[j][i];
 			}
-			int temp = dfs((cur | (1 << i)), cost + min);
+			if(min == 500) continue;
+			int temp = dfs((cur | (1 << i)));
+			if(temp != -1)
+				temp += min;
 			if(result == -1 || temp < result)
 				result = temp;
 		}
 		return dp[cur] = result;
 	}
-	
-	
 }
