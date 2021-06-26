@@ -11,88 +11,86 @@ class Main{
 		BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(bf.readLine());
 		
-		List<Integer> order = new ArrayList<>();
+		List<Integer> order = new ArrayList<>();	order.add(0);
 		while(true){
 			int temp = Integer.parseInt(st.nextToken());
 			if(temp == 0)	break;
 			order.add(temp);
 		}
-		int[][] dp = new int[13][order.size()+1];
-        for(int i = 1; i<10; i++)	dp[i][0] = INF;
-	
-	
-		int[] ret = availableSteps(1);
-		for(int )
-		// for(int i = 1; i<=order.size(); i++){
-		// 	int xStep = order.get(i-1);
-		// 	int curStep = order.get(i);
+		int[][] dp = new int[order.size()+1][25];
+        for(int j = 1; j<25; j++)	dp[0][j] = INF;
+		for(int j = 0; j<25; j++){
+			dp[1][j] = INF;
+			if()
+		}
+		for(int i = 2; i<=order.size(); i++){
+			int cur = order.get(i);
+			int x1 = order.get(i-1);
+			int x2 = 0;
+			if(2<=i)
+				x2 = order.get(i-2);
+			// move left foot
+			int new_left = cur;	int new_right = 
 			
-		// 	int[] xSteps = availableSteps(xStep);
-		// 	for(s1 : xSteps){
-		// 		int[] curSteps = availableSteps(curStep);
-		// 		for(s2 : curSteps){
-					
-		// 		}
-		// 	}
-			
-		// }
-	}
-	
-	static int[] indexToStep(int i){
-		int[] ret = new int[2];
+		}
 		
-		 return ret;
-	}
 	
-	static int stepToIndex(int i, int j){
-		if(i == j)	return -1;
-		int ret = (i-1) * 3;
-		for(int k = 1; k<=j; k++){
-			if(i == k)	continue;
-			ret++;
-		}
-		return ret;
-	}
-	
-	static int getCost(int[] s1, int[] s2){
-		int i = 0;	int j = 0;
-		loop:
-		for(;i<2; i++){
-			for(;j<2; j++){
-				if(s1[i] == s2[j])
-					break loop;
-			}
-		}
-		//
-		i = (i+1)%2;	j = (j+1)%2;
-		if(s1[i] == s2[j])
-			return 1;
-		if(s1[i] == 0 || s2[j] == 0)
-			return 2;
-		if(Math.abs(s1[i] - s2[j]) == 2)
-			return 4;
-		return 3;
-	}
-	
-	static int[] availableSteps(int s){
-		int[] ret = new int[6];
-		int index = 0;
-		for(int j = 1; j<=4; j++){
-			if(s == j)	continue;
-			ret[index++] = stepToIndex(s, j);
-		}
-		for(int i = 1; i<=4; i++){
-			if(s == i)	continue;
-			ret[index++] = stepToIndex(i, s);
-		}
-		return ret;
+		
 	}
 }
 
 class Step{
-	int left, right;
+	int left = 0, right = 0;
 	Step(int left, int right){
 		this.left = left;	this.right = right;
 	}
 	
+	Step(int index){
+		for(int i = 0; i<5; i++){
+			for(int j = 0; j<5; j++){
+				if(stepToIndex[i][j] == index){
+					this.left = i;	this.right = j;
+				}
+			}
+		}
+	}
+	
+	static boolean movable(Step s1, Step s2){
+		if(s1.left == s2.left || s1.right == s2.right)	return true;
+		return false;
+	}
+	
+	static int getCost(Step s1, Step s2){
+	
+		if(!movable(s1, s2))	return -1;
+		
+		int v1 = s1.left;	int v2 = s2.left;
+		if(s1.right == s2.right)	// focus on right
+			v1 = s1.right;	v2 = s2.right;
+		//
+		if(v1 == v2)	return 1;
+		if(v1 == 0)		return 2;
+		if(Math.abs(v1 - v2) == 2)	return 4;
+		return 3;
+	}
+	
+	
+	
+	static int[][] stepToIndex = {
+		{0, 5, 10, 15, 20},
+		{1, 6, 11, 16, 21},
+		{2, 7, 12, 17, 22},
+		{3, 8, 13, 18, 23},
+		{4, 9, 14, 19, 24},
+	};
+	
+	@Override
+	public boolean equals(Object o){
+		return this.left == ((Step)o).left && this.right == ((Step)o).right;
+	}
 }
+
+
+
+
+
