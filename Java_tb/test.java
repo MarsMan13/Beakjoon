@@ -9,6 +9,7 @@ class Main{
 	
 		int A = 16;
 		System.out.println(A & (-1 * A));
+		System.out.println("check");
 	}		
 }
 
