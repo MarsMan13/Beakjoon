@@ -1,13 +1,11 @@
 import java.util.*;
 import java.io.*;
 
-
 class Main{
    
     static int[][] pairs = null; 
     
     public static void main(String[] args) throws IOException {
-        
         
         BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(bf.readLine());
@@ -25,9 +23,7 @@ class Main{
                 pairs[p1][p2] = pairs[p2][p1] = 1;
             }
             // END OF INIT
-        
             int[] visited = new int[n];
-        
             sb.append(def(visited, n));    sb.append("\n");
         }
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
