@@ -26,26 +26,27 @@ class Main{
 		bw.write(sb.toString());	bw.flush(); bw.close();
 	}
 	
-	public static void def(int step, int[] curTime, int click){
+	public static int def(int step, int[] curTime, int click){
 		
 		if(step == 10){
 			for(int time : curTime){
 				if(time != 12){
-					return;
+					return -1;
 				}
 			}
-			if(result == -1 ||click < result)
-				result = click;
-			return;
+			return click;
 		}
 		
 		int[] curSwitch = switchs[step];
-		def(step+1, curTime, click);
+		int ret = def(step+1, curTime, click);
 		for(int i = 1; i<=3; i++){
 			setTime(curSwitch, curTime);
-			def(step+1, curTime, click+i);
+			int temp = def(step+1, curTime, click+i);
+			if(ret == -1 || (temp != -1 && temp < ret))
+				ret = temp;
 		}
 		setTime(curSwitch, curTime);
+		return ret;
 	}
 	
 	public static void setTime(int[] curSwitch, int[] curTime){
