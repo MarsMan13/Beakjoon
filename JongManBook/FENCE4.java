@@ -15,7 +15,7 @@ class Main{
 		for(int t = 0; t<T; t++){
 			int N = Integer.parseInt(bf.readLine());
 			StringTokenizer st = new StringTokenizer(bf.readLine());
-			input = new int[N+1];
+			input = new int[N+2];
 			for(int i = 1; i<=N; i++)	input[i] = Integer.parseInt(st.nextToken());
 			//
 			sb.append(def(1, N));	sb.append("\n");
@@ -31,30 +31,17 @@ class Main{
 		int mid = (left + right) / 2;
 		int ret = Math.max(def(left, mid), def(mid+1, right));
 		//
-		int leftIndex = mid;	int rightIndex = mid;
 		int tempH = input[mid];
-		while(true){
-			tempH = Math.min(tempH, Math.min(input[leftIndex], input[rightIndex]));
-			int tempW = rightIndex - leftIndex + 1;
-			int tempS = tempH * tempW;
-			if(ret < tempS)	ret = tempS;
-			
-			if(leftIndex == left && rightIndex == right)	break;
-			//
-			if(leftIndex == left)			rightIndex++;
-			else if(rightIndex == right)	leftIndex--;
-			else{
-				int nextLeftIndex = leftIndex-1;
-				int nextRightIndex = rightIndex+1;
-				// CASE 1
-				if(tempH <= input[nextLeftIndex] && tempH <= input[nextRightIndex]){
-					leftIndex--;	rightIndex++;
-				}	// CASE 2
-				else{
-					if(input[nextLeftIndex] < input[nextRightIndex])	rightIndex++;
-					else												leftIndex--;
-				}
+		int leftIndex = mid;	int rightIndex = mid;
+		while(left < leftIndex || rightIndex < right){
+			if(rightIndex < right && (leftIndex == left || input[leftIndex-1] < input[rightIndex+1])){
+				rightIndex++;
 			}
+			else{
+				leftIndex--;
+			}
+			tempH = Math.min(tempH, Math.min(input[leftIndex], input[rightIndex]));
+			ret = Math.max(ret, tempH * (rightIndex - leftIndex + 1));
 		}
 		return ret;
 		
