@@ -51,13 +51,13 @@ class Main{
 		char curC = W.charAt(wFrom);
 		//
 		int ret = 1;	// 0 : not okay
-		if(curC == '?')
-			ret = Math.max(ret, def(wFrom+1, inputFrom+1, input));
-		else if(curC == '*')
-			for(int i = inputFrom; i<=input.length(); i++)
-				ret = Math.max(ret, def(wFrom+1, i, input));
-		else if(curC == input.charAt(inputFrom))
-			ret = Math.max(ret, def(wFrom+1, inputFrom+1, input));
+		if(curC == '?' || curC == input.charAt(inputFrom)){
+			ret = def(wFrom+1, inputFrom+1, input);
+		}
+		else if(curC == '*'){
+			if(def(wFrom+1, inputFrom, input) == 2 || (inputFrom < input.length() && def(wFrom, inputFrom+1, input) == 2))
+				ret = 2;
+		}
 		return dp[wFrom][inputFrom] = ret;
 	}
 }
