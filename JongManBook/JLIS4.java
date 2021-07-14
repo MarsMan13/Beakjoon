@@ -57,16 +57,17 @@ class Main{
 		if(dp[i][j] != 0){
 			return dp[i][j];
 		}
-		
-		int ret1 = 0;
-		if(input1[i] < min)	ret1 = Math.max(ret1, def(i-1, j, input1[i]));
-		if(input2[j] < min)	ret1 = Math.max(ret1, def(i, j-1, input2[j]));
-		
-		int ret2 = 0;
-		ret2 = Math.max(ret2, def(i-1, j, min));
-		ret2 = Math.max(ret2, def(i, j-1, min));
-		
-		return dp[i][j] = Math.max(ret1+1, ret2);
+	
+		int ret = 0;
+		for(int ii = i; 0<=ii; ii--){
+			if(input1[ii] < min)
+				ret = Math.max(ret, def(ii-1, j, input1[ii]));
+		}
+		for(int jj = j; 0<=jj; jj--){
+			if(input2[jj] < min)
+				ret = Math.max(ret, def(i, jj-1, input2[jj]));
+		}
+		return dp[i][j] = ret+1;
 	}
 }
 

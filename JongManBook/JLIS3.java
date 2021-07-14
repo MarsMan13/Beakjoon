@@ -44,10 +44,6 @@ class Main2{
 					input2 =tempInput;
 				}
 			}
-			// dp = new int[n+1][m+1];
-			// for(int i = 1; i<=n; i++){
-			// 	result = Math.max(result, def(i-1, m, input1[i]));
-			// }
 			sb.append(result);	sb.append("\n");
 		}
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
