@@ -24,17 +24,34 @@ class Main{
 			
 			// END OF INIT
 			int[][] dp = new int[n+1][m+1];
-			dp[1][0] = dp[0][1] = 1;
-			int result = Integer.MIN_VALUE;
+			for(int i = 1; i<=n; i++)	dp[i][0] = 1;
+			for(int j = 1; j<=m; j++)	dp[0][j] = 1;
+			int result = 0;
 			for(int i = 1; i<=n; i++){
 				for(int j = 1; j<=m; j++){
-					dp[i][j] = Math.max(dp[i-1][j], dp[i][j-1]);
-					if(input1[i-1] < input1[i] && input1[i] != input2[j])
-						dp[i][j] = Math.max(dp[i][j], dp[i-1][j]+1);
-					if(input2[j-1] < input2[j] && input2[j] != input1[i])
-						dp[i][j] = Math.max(dp[i][j], dp[i][j-1]+1);
-					result = Math.max(result, dp[i][j]);
+					// about input1
+					dp[i][j] = 1;
+					if(input1[i] == input2[j])	dp[i][j] = dp[i-1][j];
+					else{
+						for(int ii = i-1; 0<=ii; ii--){
+							if(input1[ii] < input1[i])
+								dp[i][j] = Math.max(dp[i][j], dp[ii][j] + 1);
+						}
+						for(int jj = j-1; 0<=jj; jj--){
+							if(input2[jj] < input2[j])
+								dp[i][j] = Math.max(dp[i][j], dp[i][jj] + 1);
+							
+						}
+					}
+					if(result < dp[i][j])	result = dp[i][j];
 				}
+			}
+			System.out.println("\n======");
+			for(int i = 0; i<=n; i++){
+				for(int j = 0; j<=m; j++){
+					System.out.printf("%2d ", dp[i][j]);
+				}
+				System.out.println();
 			}
 			// END OF PROCESS
 			sb.append(result);	sb.append("\n");
