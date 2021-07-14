@@ -2,7 +2,7 @@ import java.util.*;
 import java.io.*;
 
 
-class Main2{
+class Main{
 
 	static int n = 0, m = 0;
 	static int[] input1 = new int[1];
@@ -33,7 +33,7 @@ class Main2{
 					result = Math.max(result, def(i-1, m, input1[i]));
 				}
 				
-				// END OF FIRST RUN;
+				//END OF FIRST RUN;
 				{
 					int temp = n;
 					n = m;
@@ -44,10 +44,6 @@ class Main2{
 					input2 =tempInput;
 				}
 			}
-			// dp = new int[n+1][m+1];
-			// for(int i = 1; i<=n; i++){
-			// 	result = Math.max(result, def(i-1, m, input1[i]));
-			// }
 			sb.append(result);	sb.append("\n");
 		}
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
@@ -62,21 +58,15 @@ class Main2{
 			return dp[i][j];
 		}
 		
-		int ret = 0;
-		{
-			for(int ii = i; 0<=ii; ii--){
-				if(input1[ii] < min){
-					ret = Math.max(ret, def(ii-1, j, input1[ii]));
-				}
-				for(int jj = j; 0<=jj; jj--){
-					if(input2[jj] < min){
-						ret = Math.max(ret, def(ii, jj-1, input2[jj]));
-					}
-				}
-			}
-		}
-		// System.out.printf("i: %d, j: %d == %d\n", i, j, ret+1);
-		return dp[i][j] = ret + 1;
+		int ret1 = 0;
+		if(input1[i] < min)	ret1 = Math.max(ret1, def(i-1, j, input1[i]));
+		if(input2[j] < min)	ret1 = Math.max(ret1, def(i, j-1, input2[j]));
+		
+		int ret2 = 0;
+		ret2 = Math.max(ret2, def(i-1, j, min));
+		ret2 = Math.max(ret2, def(i, j-1, min));
+		
+		return dp[i][j] = Math.max(ret1+1, ret2);
 	}
 }
 
