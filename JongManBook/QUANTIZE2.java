@@ -1,7 +1,7 @@
 import java.util.*;
 import java.io.*;
 
-
+// time complex : 100 millions.
 class Main{
 	
 	static int N, S;
@@ -37,31 +37,28 @@ class Main{
 				for(int i = 0; i<=rowMax; i++)
 					for(int j = 1; j<=N; j++)
 						dp2[s][i][j] = -1;
-			sb.append(def(0, 1, S));	sb.append("\n");
+			sb.append(def(S, 0, 1));	sb.append("\n");
 		}
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 		bw.write(sb.toString());	bw.flush();	bw.close();
 		
 	}
-	
-	public static int def(int i, int j, int depth){
-	
-		if(N<j || rowMax<i || depth <= 0)	return 0;
+
+	public static int def(int depth, int i, int j){
 		if(dp2[depth][i][j] != -1)	return dp2[depth][i][j];
-		int min = -1;
-		for(int ii = i; ii<=rowMax; ii++){
-			if(depth == 1 || ii == rowMax){
-				int temp = dp1[ii][N] - dp1[ii][j-1];
-				if(min == -1 || temp < min)	min = temp;
-				continue;	
-			}
-			for(int jj = j; jj<N; jj++){
-				int temp = dp1[ii][jj] - dp1[ii][j-1];
-				temp += def(ii+1, jj+1, depth-1);
-				if(min == -1 || temp < min)	min = temp;
-			}
+		
+		if(i == rowMax)	return dp1[i][N] - dp1[i][j-1];
+		// else
+		int min = dp1[i][N] - dp1[i][j-1];
+		for(int jj = j; jj<N && depth != 1; jj++){
+			int temp = dp1[i][jj] - dp1[i][j-1];
+			temp += def(depth-1, i+1, jj+1);
+			if(temp < min)	min = temp;
 		}
-		// System.out.printf("min: %d\n", min);
+		{
+			int temp = def(depth, i+1, j);
+			if(temp < min) min = temp;
+		}	
 		return dp2[depth][i][j] = min;
 	}
 }	

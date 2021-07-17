@@ -31,37 +31,38 @@ class Main{
 					dp1[i][j] = square + dp1[i][j-1];
 				}
 			}
+			
 			//	upper : O(1000 * N) == O(1000 * 100)
 			dp2 = new int[S+1][rowMax+1][N+1];
 			for(int s = 0; s<=S; s++)
 				for(int i = 0; i<=rowMax; i++)
 					for(int j = 1; j<=N; j++)
 						dp2[s][i][j] = -1;
-			sb.append(def(0, 1, S));	sb.append("\n");
+			sb.append(def(S, 0, 1, 0));	sb.append("\n");
 		}
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 		bw.write(sb.toString());	bw.flush();	bw.close();
 		
 	}
 	
-	public static int def(int i, int j, int depth){
-	
-		if(N<j || rowMax<i || depth <= 0)	return 0;
+	public static int def(int depth, int i, int j, int selected){
 		if(dp2[depth][i][j] != -1)	return dp2[depth][i][j];
-		int min = -1;
-		for(int ii = i; ii<=rowMax; ii++){
-			if(depth == 1 || ii == rowMax){
-				int temp = dp1[ii][N] - dp1[ii][j-1];
-				if(min == -1 || temp < min)	min = temp;
-				continue;	
-			}
-			for(int jj = j; jj<N; jj++){
-				int temp = dp1[ii][jj] - dp1[ii][j-1];
-				temp += def(ii+1, jj+1, depth-1);
-				if(min == -1 || temp < min)	min = temp;
-			}
+		
+		if(i == rowMax)	{
+			return dp2[depth][i][j] = dp1[i][N] - dp1[i][j-1];
 		}
-		// System.out.printf("min: %d\n", min);
+		// else
+		int min = dp1[i][N] - dp1[i][j-1];
+		if(j<N){
+			int temp = dp1[i][j] - dp1[i][j-1];
+			temp += def(depth, i, j+1, 1);
+			if(temp < min)	min = temp;
+		}
+		if(1<=depth-selected){
+			int temp = def(depth-selected, i+1, j, 0);
+			if(temp < min)	min = temp;
+		}
+		// System.out.printf("d: %d i: %d j: %d min: %d\n", depth, i, j, min);
 		return dp2[depth][i][j] = min;
 	}
 }	
