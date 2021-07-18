@@ -8,7 +8,7 @@ class Main{
 	static int[] input = null;
 	static int rowMax = 0;
 	static int[][] dp1 = null;
-	static int[][][] dp2 = null;
+	static int[][] dp2 = null;
 	
 	public static void main(String[] args) throws IOException {
 		
@@ -22,49 +22,42 @@ class Main{
 			st = new StringTokenizer(bf.readLine());
 			for(int i = 1; i<=N; i++)	input[i] = Integer.parseInt(st.nextToken());
 			Arrays.sort(input);
-			rowMax = input[N] - input[1];
-			dp1 = new int[rowMax+1][N+1];
-			for(int i = 0; i<=rowMax; i++){
-				int pivot = input[1] + i;
-				for(int j = 1; j<=N; j++){
-					int square = (pivot - input[j]) * (pivot - input[j]);
-					dp1[i][j] = square + dp1[i][j-1];
-				}
+			dp1 = new int[3][N+1];
+			dp2 = new int[S+1][N+1];
+			for(int i = 1; i<=N; i++){
+				dp1[1][i] = input[i] + dp1[1][i-1];
+				dp1[2][i] = input[i] * input[i] + dp1[2][i-1];
 			}
-			//	upper : O(1000 * N) == O(1000 * 100)
-			dp2 = new int[S+1][rowMax+1][N+1];
-			for(int s = 0; s<=S; s++)
-				for(int i = 0; i<=rowMax; i++)
-					for(int j = 1; j<=N; j++)
-						dp2[s][i][j] = -1;
-			sb.append(def(S, 0, 1, 0));	sb.append("\n");
+			for(int i = 0; i<=S; i++)
+				for(int j = 0; j<=N; j++)
+					dp2[i][j] = -1;
+			// END OF INIT
+		
+			sb.append(def(1, S));	sb.append("\n");
 		}
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 		bw.write(sb.toString());	bw.flush();	bw.close();
 		
 	}
 
-	public static int def(int depth, int i, int j, int flag){
-		if(dp2[depth][i][j] != -1)	return dp2[depth][i][j];
+	public static int cal(int from, int end){
+		int m = dp1[1][end] - dp1[1][from-1];
+		m = (int)Math.round((float)m/(end - from + 1));
+		int ret = (dp1[2][end] - dp1[2][from-1]) - (2*m*(dp1[1][end] - dp1[1][from-1])) + (m*m*(end-from+1));
+		return ret;
+	}
+	
+	public static int def(int from, int parts){
 		
-		if(i == rowMax)	return dp1[i][N] - dp1[i][j-1];
-		// else
-		int min = dp1[i][N] - dp1[i][j-1];
+		if(N < from)	return 0;
+		if(parts < 1)	return 987654321;
 		
-		if(j<N){
-			int temp = dp1[i][j] - dp1[i][j-1];
-			temp += def(depth, i, j+1, 1);
-			if(temp < min)	min = temp;
-		}
+		if(dp2[parts][from] != -1)	return dp2[parts][from];
 		
-		if(flag == 1){
-			int temp = def(depth - 1, i+1, j, 0);
-			if(temp < min)	min = temp;
+		int min = 987654321;
+		for(int i = from; i<=N; i++){
+			min = Math.min(min, cal(from, i) + def(i+1, parts-1));
 		}
-		if(flag == 0){
-			int temp = def(depth, i+1, j, 0);
-			if(temp < min)	min = temp;
-		}
-		return dp2[depth][i][j] = min;
+		return dp2[parts][from] = min;
 	}
 }	

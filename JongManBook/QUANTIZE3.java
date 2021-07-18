@@ -38,7 +38,15 @@ class Main{
 				for(int i = 0; i<=rowMax; i++)
 					for(int j = 1; j<=N; j++)
 						dp2[s][i][j] = -1;
+						
 			sb.append(def(S, 0, 1, 0));	sb.append("\n");
+			for(int s = 1; s<=S; s++){
+				System.out.println("s: "+s);
+				for(int i = 0; i<=rowMax; i++){
+					for(int j = 1; j<=N; j++)
+						System.out.printf("i: %d, j: %d == %d\n", i, j, dp2[s][i][j]);
+				}
+			}
 		}
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 		bw.write(sb.toString());	bw.flush();	bw.close();
@@ -48,9 +56,7 @@ class Main{
 	public static int def(int depth, int i, int j, int selected){
 		if(dp2[depth][i][j] != -1)	return dp2[depth][i][j];
 		
-		if(i == rowMax)	{
-			return dp2[depth][i][j] = dp1[i][N] - dp1[i][j-1];
-		}
+		if(i == rowMax)	return dp2[depth][i][j] = dp1[i][N] - dp1[i][j-1];
 		// else
 		int min = dp1[i][N] - dp1[i][j-1];
 		if(j<N){
@@ -62,7 +68,6 @@ class Main{
 			int temp = def(depth-selected, i+1, j, 0);
 			if(temp < min)	min = temp;
 		}
-		// System.out.printf("d: %d i: %d j: %d min: %d\n", depth, i, j, min);
 		return dp2[depth][i][j] = min;
 	}
 }	
