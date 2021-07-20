@@ -7,6 +7,7 @@ class Main{
 	static int n, d, p;	// number, days, prison
 	static int[][] map = null;
 	static int[] adjCnt = null;
+	// static double[][][] dp = null;
 	static double[] result = null;
 	static int t;
 	
@@ -22,7 +23,9 @@ class Main{
 			d = Integer.parseInt(st.nextToken());
 			p = Integer.parseInt(st.nextToken());
 			map = new int[n][n];
-			adjCnt = new int[n];	result = new double[n];
+			adjCnt = new int[n];
+			// dp = new double[d+1][n][n];
+			result = new double[n];
 			for(int i = 0; i<n; i++){
 				st = new StringTokenizer(bf.readLine());
 				for(int j = 0; j<n; j++){
@@ -31,12 +34,17 @@ class Main{
 				}
 			}
 			//
-			def(0, p);
+			// for(int i = 0; i<=d; i++)
+			// 	for(int j = 0; j<n; j++)
+			// 		for(int k = 0; k<n; k++)
+			// 			dp[i][j][k] = -1.0;
+			def(0, p, 1.0);
+			
 			//
 			int t = Integer.parseInt(bf.readLine());
 			st = new StringTokenizer(bf.readLine());
 			for(int tt = 0; tt < t; tt++){
-				sb.append(result[Integer.parseInt(st.nextToken())]);
+				sb.append(String.format("%.8f", result[Integer.parseInt(st.nextToken())]));
 				if(tt != t-1)	sb.append(" ");
 				else			sb.append("\n");
 			}
@@ -45,16 +53,16 @@ class Main{
 		bw.write(sb.toString());	bw.flush();	bw.close();
 	}
 	
-	public static double def(int day, int index){
-		if(d == day)	return 1.;
-	
-		double ret = 0.;
+	public static void def(int day, int index, double curPer){
+		if(day == d){
+			result[index] += curPer;
+			return;
+		}
+		
 		double per = 1.0 / adjCnt[index];
 		for(int adj = 0; adj < n; adj++){
 			if(map[index][adj] == 0)	continue;
-			ret += per * def(day+1, adj);
+			def(day+1, adj, curPer * per);
 		}
-		result[index] += ret;
-		return ret;
 	}
 }
