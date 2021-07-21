@@ -6,12 +6,12 @@ class Main{
 	
 	static int n, d, p;	// number, days, prison
 	static int[][] map = null;
-	static int[][] dp = null;
+	static double[][] dp = null;
 	static int[] adjs = null;
 	static double[] result = null;
+	static int q = 0;
 	
 	public static void main(String[] args) throws IOException {
-		
 		
 		BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
 		StringBuilder sb = new StringBuilder();
@@ -22,7 +22,7 @@ class Main{
 			map = new int[n][n];
 			adjs = new int[n];
 			result = new double[n];
-			dp = new int[d+1][n];
+			dp = new double[d+1][n];
 			for(int i = 0; i<n; i++){
 				st = new StringTokenizer(bf.readLine());
 				for(int j = 0; j<n; j++){
@@ -31,12 +31,15 @@ class Main{
 				}
 			}
 			// PROCESS
-			def(0, p, 1.0);
 			
 			int t = Integer.parseInt(bf.readLine());
 			st = new StringTokenizer(bf.readLine());
 			for(int tt = 0; tt < t; tt++){
-				sb.append(String.format("%.8f", result[Integer.parseInt(st.nextToken())]));
+				for(int i = 0; i<=d; i++)
+					for(int j = 0; j<n; j++)
+						dp[i][j] = -1.0;
+				q = Integer.parseInt(st.nextToken());
+				sb.append(String.format("%.8f", def(0, p)));
 				if(tt != t-1)	sb.append(" ");
 				else			sb.append("\n");
 			}
@@ -45,16 +48,20 @@ class Main{
 		bw.write(sb.toString());	bw.flush();	bw.close();
 	}
 	
-	public static void def(int day, int index, double curPer){
+	public static double def(int day, int index){
 		if(day == d){
-			result[index] += curPer;
-			return;
+			if(index == q)	return 1.0;
+			return 0.0;
 		}
 		
-		double nextPer = 1.0 / adjs[index] * curPer;
+		if(dp[day][index] > -0.5)	return dp[day][index];
+		
+		double ret = 0.0;
+		double curPer = 1.0 / adjs[index];
 		for(int adj = 0; adj < n; adj++){
 			if(map[index][adj] == 0)	continue;
-			def(day+1, adj, nextPer);
+			ret += curPer * def(day+1, adj);
 		}
+		return dp[day][index] = ret;
 	}
 }
