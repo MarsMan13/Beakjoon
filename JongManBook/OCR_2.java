@@ -63,39 +63,40 @@ class Main{
 			}
 			//
 			for(int j = 0; j<m; j++)
-				dp[length-1][j] = mat2[j][word[length-1]];
-			for(int i = length-2; 0<=i; i--){
+				dp[0][j] = mat2[j][word[0]] * startPer[j];
+				
+			for(int i = 1; i<length; i++){
 				int curR = word[i];
 				for(int j = 0; j<m; j++){
 					dp[i][j] = -1.0;
 					for(int k = 0; k<m; k++){
-						double tempPer = mat2[j][curR] * mat1[j][k] * dp[i+1][k];
+						double tempPer = mat2[j][curR] * mat1[k][j];
 						if(dp[i][j] < tempPer){
 							dp[i][j] = tempPer;
 							dp2[i][j] = k;
 						}
-					}
+					}    
 				}
-			}
+			}	
 			//
-			for(int j = 0; j<m; j++){
-				dp[0][j] *= startPer[j];
-			}
-			
 			{
+				StringBuilder sb2 = new StringBuilder();
+				double maxPer = dp[length-1][0];
 				int j = 0;
-				double tempPer = dp[0][0];
 				for(int jj = 0; jj<m; jj++){
-					if(tempPer < dp[0][jj]){
-						j = jj;	tempPer = dp[0][jj];
+					if(maxPer < dp[length-1][jj]){
+						maxPer = dp[length-1][jj];
+						j = jj;
 					}
 				}
-				sb.append(words[j]);	sb.append(" ");
-				j = dp2[0][j];
-				for(int i = 1; i<length; i++){
-					sb.append(words[j]);	sb.append(" ");
+				sb2.insert(0, words[word[j]]);	sb2.insert(0, " ");
+				for(int i = length-2; 1<=i; i--){
 					j = dp2[i][j];
+					sb2.insert(0, words[word[j]]);	
+					if(i != 1)
+						sb2.insert(0, " ");
 				}
+				sb.append(sb2);
 			}
 			sb.append("\n");
 		}
