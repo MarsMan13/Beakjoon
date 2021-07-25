@@ -6,10 +6,10 @@ class Main{
 	static StringBuilder sb = new StringBuilder();
 
 	static int N;
-	static int K;
+	static double K;
 	static int[] input = null;
-	static int[] dp = null;
-	static int[][] dp2 = null;	// i : index, j : The number of possible case about length j 
+	static int[] dp = null;		// stores max length (<= 500) 
+	static double[][] dp2 = null;	// i : index, j : The number of possible case about length j 
 	static int max = 0;
 	static int[] value2Index = null;
 	
@@ -20,11 +20,11 @@ class Main{
 		int T = Integer.parseInt(bf.readLine());
 		for(int t = 0; t<T; t++){
 			StringTokenizer st = new StringTokenizer(bf.readLine());
-			N = Integer.parseInt(st.nextToken());	K = Integer.parseInt(st.nextToken());
+			N = Integer.parseInt(st.nextToken());	K = Double.parseDouble(st.nextToken());
 			input = new int[N+1];	
 			dp = new int[N+1];	Arrays.fill(dp, 1);
-			dp2 = new int[N+1][N+1];
-			for(int i = 1; i<=N; i++)	dp2[i][1] = 1;
+			dp2 = new double[N+1][N+1];
+			for(int i = 1; i<=N; i++)	dp2[i][1] = 1.0;
 			st = new StringTokenizer(bf.readLine());
 			value2Index = new int[100001];
 			for(int i = 1; i<=N; i++){
@@ -54,7 +54,7 @@ class Main{
 		// stores indexes of targets s.t sorted by dict order;
 		Set<Integer> targets = new TreeSet<>();
 		for(int i = index; i<=N; i++){
-			if(limit < input[i] && dp2[i][count] != 0)
+			if(limit < input[i] && dp2[i][count] != 0.0)
 				targets.add(input[i]);
 		}
 		for(Iterator<Integer> itr = targets.iterator(); itr.hasNext(); ){
