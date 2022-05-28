@@ -1,8 +1,6 @@
 import java.util.*;
 import java.io.*;
 
-
-
 class Main{
 
 	static int N = 0;
@@ -65,4 +63,3 @@ class Range implements Comparable<Range>{
 		return "from: "+from+" to: "+to+" , Sum is "+value;
 	}
 }
-
