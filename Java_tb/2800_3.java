@@ -5,13 +5,13 @@ import java.io.*;
 class Main{
 
     static String input = null;
-    static TreeMap<Integer, Bracket> brackets = new TreeMap<>();
     static StringBuilder answer = new StringBuilder();
-
+    static Bracket[] brackets = null;    
     public static void main(String[] args) throws IOException {
 
         BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
         input = bf.readLine();
+        brackets = new Bracket[input.length()];
         {
             Deque<Integer> stack = new ArrayDeque<>();
             for(int i = 0; i<input.length(); i++){
@@ -19,7 +19,15 @@ class Main{
                     stack.push(i);
                 else if(input.charAt(i) == ')'){
                     int index_ = stack.pop();
-                    brackets.put(index_, new Bracket(index_, i));
+                    brackets[index_] = new Bracket(index_, i);
+                }
+            }
+            // step2
+            Bracket beforeBracket = null;
+            for(int i = 0; i<input.length(); i++){
+                if(brackets[i] != null){
+                    brackets[i].beforeBracket = beforeBracket;
+                    beforeBracket = brackets[i];
                 }
             }
         }
@@ -52,14 +60,15 @@ class Main{
             return;
         }
         if(input.charAt(index) == '('){
-            Bracket curBracket = brackets.get(index);
+            Bracket curBracket = brackets[index];
             Bracket beforeBracket = curBracket.beforeBracket;
             if(beforeBracket == null ||
                 !((Bracket.nextBracketChecker(curBracket, beforeBracket)) && (!stack.contains(beforeBracket)))
-            )
-                stack.push(brackets.get(index));  // put '('
+            ){
+                stack.push(brackets[index]);  // put '('
                 recursiveFunc(index+1, sb, stack, flag);
                 stack.pop();
+            }
             //*********************************** */
             recursiveFunc(index+1, sb, stack, flag+1);
         }
@@ -71,19 +80,14 @@ class Main{
 
 class Bracket{
 
-    static Bracket curBracket = null;
-
     int head, tail;
     Bracket beforeBracket = null;
-    int selected = 0;
     Bracket(int head, int tail){
         this.head = head; this.tail = tail;
-        beforeBracket = curBracket;
-        curBracket = this;
     }
 
     public static boolean nextBracketChecker(Bracket p1, Bracket p2){
-        return ((p1.head - p2.head) * (p1.tail - p2.tail)) == 1;
+        return ((p1.head - p2.head) * (p1.tail - p2.tail)) == -1;
     }
 
     @Override
