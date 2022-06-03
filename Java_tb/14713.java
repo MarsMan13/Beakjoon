@@ -32,7 +32,6 @@ class Main{
         int flag = 0;
         for(Iterator<String> itr = target.iterator(); itr.hasNext(); ){
             String word = itr.next();
-            //
             flag = 0;
             for(int i = 0; i<N; i++){
                 if(!inputs[i].isEmpty() && word.equals(inputs[i].peek())){
