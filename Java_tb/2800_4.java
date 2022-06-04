@@ -7,10 +7,9 @@ class Main{
     static int[] posInfo = null;
     static TreeSet<String> answers = new TreeSet<>();
     public static void main(String[] args) throws IOException {
-
         BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
         input = bf.readLine();
-        posInfo = new int[input.length()];
+        posInfo = new int[input.length()]; // [1, 6] posInfo[1] = 6; posInfo[6] = 1;
         Arrays.fill(posInfo, -1);
         {
             Deque<Integer> stack = new ArrayDeque<>();
@@ -36,12 +35,13 @@ class Main{
         }
         System.out.println(sb.toString());
     }
-
+    // ((2))(1) 8 index 0->7
     public static void dfs(int index, boolean[] selected){
         if(index == input.length()){
             StringBuilder sb = new StringBuilder();
             for(int i = 0; i<input.length(); i++)
-                if(selected[i]) sb.append(input.charAt(i));
+                if(selected[i]) 
+                    sb.append(input.charAt(i));
             answers.add(sb.toString());
             return;
         }
