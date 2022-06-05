@@ -49,6 +49,5 @@ class Main{
             System.out.println("Impossible");
         else
             System.out.println("Possible");
->>>>>>> 120c1a82e05d8013f18e6723d3e07d5cb1a29f4e
     }
 }
