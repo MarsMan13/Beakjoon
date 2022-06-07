@@ -8,7 +8,6 @@ class Main{
     static Queue[] inputs = null;
     static List<String> target = new ArrayList<>();
     public static void main(String[] args) throws IOException {
-
         BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(bf.readLine());
         N = Integer.parseInt(st.nextToken());
