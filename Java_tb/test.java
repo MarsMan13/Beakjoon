@@ -4,7 +4,6 @@ import java.io.*;
 
 class Main{
 	
-	
 	public static void main(String[] args) throws IOException {
 	
 		Deque<Integer> queue = new ArrayDeque<>();
