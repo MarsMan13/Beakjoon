@@ -7,9 +7,15 @@ class Main{
 	
 	public static void main(String[] args) throws IOException {
 	
-		int A = 16;
-		System.out.println(A & (-1 * A));
-		System.out.println("check");
+		Deque<Integer> queue = new ArrayDeque<>();
+		queue.offer(1);
+		queue.offer(2);
+		System.out.println(queue);
+		queue.poll();
+		System.out.println(queue);
+		queue.offer(3);
+		queue.offer(4);
+		System.out.println(queue);
 	}		
 }
 
