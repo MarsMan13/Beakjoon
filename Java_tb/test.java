@@ -1,7 +1,6 @@
 import java.util.*;
 import java.io.*;
 
-
 class Main{
 	
 	public static void main(String[] args) throws IOException {
@@ -15,6 +14,7 @@ class Main{
 		queue.offer(3);
 		queue.offer(4);
 		System.out.println(queue);
+		return;
 	}		
 }
 
