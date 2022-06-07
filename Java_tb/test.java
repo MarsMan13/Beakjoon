@@ -14,7 +14,6 @@ class Main{
 		queue.offer(3);
 		queue.offer(4);
 		System.out.println(queue);
-		return;
 	}		
 }
 
