@@ -10,7 +10,6 @@ class Main{
     static StringBuilder sb = new StringBuilder();
     public static void main(String[] args) throws IOException {
 
-
         BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(bf.readLine());
         L = Integer.parseInt(st.nextToken());   C = Integer.parseInt(st.nextToken());
