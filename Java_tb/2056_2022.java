@@ -38,7 +38,7 @@ class Main{
 		for(int i : curTask.preTasks){
 			if(tasks[i].dist == -1)
 				dfs(i);
-			dist = Math.max(dist, tasks[i].dist);	
+			dist = Math.max(dist, tasks[i].dist);
 		}
 		curTask.dist = dist + curTask.time;
 		return dist;

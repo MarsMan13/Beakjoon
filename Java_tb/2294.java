@@ -21,8 +21,7 @@ class Main{
         for(int i = 1; i<=k; i++){
             for(int c : coins){
                 if(c <= i && dp[i - c] != -1){
-                    if(dp[i] == -1 || dp[i - c] + 1 < dp[i])
-                        dp[i] = dp[i - c] + 1;
+                    dp[i] = Math.max(dp[i], dp[i-c]+1);
                 }
             }
         } 
