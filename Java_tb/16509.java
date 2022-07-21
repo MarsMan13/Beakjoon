@@ -31,13 +31,6 @@ class Main{
         while(!queue.isEmpty()){
             Node cur = queue.poll();
             if(king.i == cur.i && king.j == cur.j){
-                {
-                    Node node = cur;
-                    while(node != null){
-                        System.out.println(node);
-                        node = node.parent;
-                    }    
-                }
                 System.out.println(cur.t);
                 flag = true;
                 break;
@@ -46,15 +39,12 @@ class Main{
                 int tempI = cur.i + ii[s];
                 int tempJ = cur.j + jj[s];
                 if(
-                    cur.i + iii[s] != king.i &&
-                    cur.j + jjj[s] != king.j &&
-                    cur.i + iiii[s] != king.i &&
-                    cur.j + jjjj[s] != king.j
+                    !(cur.i + iii[s] == king.i && cur.j + jjj[s] == king.j) &&
+                    !(cur.i + iiii[s] == king.i && cur.j + jjjj[s] == king.j)
                 ){
                     if(0 <= tempI && tempI < 10 && 0 <= tempJ && tempJ < 9 && visited[tempI][tempJ] == 0){
                         visited[tempI][tempJ] = 1;
                         Node tempNode = new Node(tempI, tempJ, cur.t+1);
-                        tempNode.parent = cur; 
                         queue.offer(tempNode);
                     }
                 }
@@ -68,7 +58,6 @@ class Main{
 
 class Node{
     int i, j, t;
-    Node parent = null;
     Node(int i, int j, int t){
         this.i = i;
         this.j = j;

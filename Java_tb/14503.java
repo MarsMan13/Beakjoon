@@ -2,12 +2,13 @@ import java.util.*;
 import java.io.*;
 
 class Main{
-	
+	static int N = 0;
+	static int M = 0;	
 	public static void main(String[] args) throws IOException {
 		
 		BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(bf.readLine());
-		int N = Integer.parseInt(st.nextToken());	int M = Integer.parseInt(st.nextToken());
+		N = Integer.parseInt(st.nextToken());	M = Integer.parseInt(st.nextToken());
 		int[][] map = new int[N][M];
 		st = new StringTokenizer(bf.readLine());
 		Robot robot = new Robot(
@@ -20,8 +21,19 @@ class Main{
 			}
 		}
 		// END OF INIT
-
-
+		robot.time = new int[N][M];
+		robot.doStep(map);
+		//
+		int count = 0;
+		for(int i = 0; i<N; i++){
+			for(int j = 0; j<M; j++){
+				if(map[i][j] == 2)
+					count++;
+				System.out.printf("%2d ", robot.time[i][j]);
+			}
+			System.out.println();
+		}
+		System.out.println(count);
 	}
 }
 
@@ -33,22 +45,34 @@ class Robot{
 		this.j = j;
 		this.d = d;
 	}
-
-	public void doStep(int[][] map){
+	int[][] time = null;
+	int t = 1;
+	public int doStep(int[][] map){
+		time[this.i][this.j] = t++;
 		// STEP1
 		map[i][j] = 2;
 		// STEP2s
-		// STEP2-1
-		int leftDirection = (d - 1 == -1 ? 3 : d - 1);
-		int leftI = i + ii[leftDirection];
-		int leftJ = j + jj[leftDirection];
-		if(map[leftI][leftJ] == 0){
-			d = leftDirection;
-			i = leftI;
-			j = leftJ;
-			doStep(map);
+		// STEP2 - 1,2
+		for(int s = 0; s<4; s++){
+			this.d = (this.d + 3) % 4;	
+			int newI = i + ii[this.d];
+			int newJ = j + jj[this.d];
+			if(0 <= newI && newI < Main.N && 0 <= newJ && newJ < Main.M && map[newI][newJ] == 0){
+				this.i = newI;	this.j = newJ;
+				int ret = doStep(map);
+				if(ret == 1)
+					return 1;
+			}
 		}
-		else if(map[leftI][leftJ] != )
+		// STEP2 - 3,4
+		int backI = i + ii[(d+2)%4];
+		int backJ = j + jj[(d+2)%4];
+		if(0 <= backI && backI < Main.N && 0 <= backJ && backJ < Main.M && map[backI][backJ] == 2){
+			this.i = backI;
+			this.j = backJ;
+			return 0;
+		}
+		return 1;
 	}
 
 	static int[] ii = new int[]{-1, 0, 1, 0};
