@@ -1,5 +1,19 @@
 import java.util.*;
 import java.io.*;
+/*
+ * 1과 2로 쫌갰습니다
+ * 		2 4 --> YES
+ * 1	0 0 tot 0  y = 0
+ * 2 	1 2 tot 3  x = 3
+ * 
+ * x : 2의 갯수
+ * y : 1의 갯수
+ * x == y
+ * 
+ * x - 1k = y + 2k
+ * x - y = 3k (k >= 0)
+ * (x - y)%3 == 0 ?
+ */
 
 class Main{
 	

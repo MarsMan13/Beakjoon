@@ -24,6 +24,7 @@ class Main{
 				T[i] = tempT[i];
 			lengthT = tempT.length;
 		}
+		// END OF INIT	
 		for(int i = lengthT - 1; lengthS <= i; i--){
 			if(T[i] == 'B'){
 				flip(i);

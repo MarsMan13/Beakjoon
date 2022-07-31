@@ -26,6 +26,7 @@ class Main{
 					continue OUTER;
 				}
 			}
+			// 
 			// NEED TO REMOVE 
 			int targetPlug = 0;
 			int[] plugsIndex = new int[N];
