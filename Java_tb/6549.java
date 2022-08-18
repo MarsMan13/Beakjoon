@@ -1,60 +1,63 @@
 import java.util.*;
 import java.io.*;
 
-
 class Main{
 
-	static int T = 0;
-	static int size = 0;
-	static int[] input = null;
-	static int[][] mem = null;
-	static List<Integer> results = new ArrayList<>();
-
+	static int[] inputs = null;
+	static long[] tree = null;
 	public static void main(String[] args) throws IOException {
-	
+		
 		BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
-
-		int finFlag = 0;
-		while(finFlag == 0){
-			T++;
+		StringBuilder sb = new StringBuilder();
+		while(true){
 			StringTokenizer st = new StringTokenizer(bf.readLine());
-			size = st.countTokens();
-			input = new int[size];
-			mem = new int[size][size];
-
-			for(int t = 0; st.hasNext(); t++){
-				int temp = Integer.parseInt(st.nextToken());
-				
-				if(t == 0 || temp == 0){
-					finFlag = 1;
-					break;
-				}
-
-				input[t] = temp;
+			int length = Integer.parseInt(st.nextToken());
+			inputs = new int[length];
+			if(length == 0)	break;
+			for(int i = 0; st.hasMoreTokens(); i++){
+				inputs[i] = Integer.parseInt(st.nextToken());
 			}
 			// END OF INIT
-
-		}
-
+			sb.append(def(0, length-1));
+			sb.append("\n");
+		}	
+		System.out.print(sb.toString());
 	}
 
-	static int def1(int index){
-		
-		//Backward
-		int maxValue = input[index] * 1;
-		int minHeight = input[index];
-		for(int i = index-1; 0<=i; i--){
-			if(input[i] == 0)
-				break;
-			if(input[i] < minHeight){
-				minHeight = input[i];
-			}
-			int temp = minHeight * (index - i + 1);
-			if(maxValue < temp){
-				maxValue = temp;
-			}
-			mem[i][index] = temp;
-		}
+	public static long def(int start, int end){
+		if(start == end) return inputs[start];
+		//
+		int mid = (start + end) / 2;
+		long leftMax = def(start, mid);
+		long rightMax = def(mid+1, end);
 
+		long midMax = inputs[mid];
+		int midHeight = inputs[mid];
+		int left = mid-1;
+		int right = mid+1;
+		while(start <= left && right <= end){
+			if(inputs[left-1] >= inputs[right+1]){
+				midHeight = Math.min(inputs[left], midHeight);
+				midMax = Math.max(midMax, midHeight * (right - left - 1)); 
+				left--;
+			}
+			else {
+				midHeight = Math.min(inputs[right], midHeight);
+				midMax = Math.max(midMax, midHeight * (right - left - 1)); 
+				right++;
+			}
+		}
+		for(; start < left; left--){
+			midHeight = Math.min(inputs[left], midHeight);
+			midMax = Math.max(midMax, midHeight * (right - left + 1)); 
+		}
+		for(; right < end; right++){
+			midHeight = Math.min(inputs[right], midHeight);
+			midMax = Math.max(midMax, midHeight * (right - left + 1)); 
+		}
+		System.out.printf("start: %d, end: %d\n", start, end);
+		System.out.printf("%d %d %d\n", leftMax, midMax, rightMax);
+		return Math.max(midMax, Math.max(leftMax, rightMax));
 	}
+
 }
