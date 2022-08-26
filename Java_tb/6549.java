@@ -32,31 +32,29 @@ class Main{
 		long rightMax = def(mid+1, end);
 
 		long midMax = inputs[mid];
-		int midHeight = inputs[mid];
+		long midHeight = 1L * inputs[mid];
 		int left = mid-1;
 		int right = mid+1;
 		while(start <= left && right <= end){
-			if(inputs[left-1] >= inputs[right+1]){
+			if(inputs[left] >= inputs[right]){
 				midHeight = Math.min(inputs[left], midHeight);
-				midMax = Math.max(midMax, midHeight * (right - left - 1)); 
+				midMax = Math.max(midMax, midHeight * (right - left)); 
 				left--;
 			}
 			else {
 				midHeight = Math.min(inputs[right], midHeight);
-				midMax = Math.max(midMax, midHeight * (right - left - 1)); 
+				midMax = Math.max(midMax, midHeight * (right - left)); 
 				right++;
 			}
 		}
-		for(; start < left; left--){
+		for(; start <= left; left--){
 			midHeight = Math.min(inputs[left], midHeight);
-			midMax = Math.max(midMax, midHeight * (right - left + 1)); 
+			midMax = Math.max(midMax, midHeight * (right - left)); 
 		}
-		for(; right < end; right++){
+		for(; right <= end; right++){
 			midHeight = Math.min(inputs[right], midHeight);
-			midMax = Math.max(midMax, midHeight * (right - left + 1)); 
+			midMax = Math.max(midMax, midHeight * (right - left)); 
 		}
-		System.out.printf("start: %d, end: %d\n", start, end);
-		System.out.printf("%d %d %d\n", leftMax, midMax, rightMax);
 		return Math.max(midMax, Math.max(leftMax, rightMax));
 	}
 
