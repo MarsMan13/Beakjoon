@@ -20,7 +20,6 @@ class Main{
 		}
 		Collections.sort(inputs);
 		// END OF INIT
-		int result = 0;
 		int[] days = new int[maxD+1];
 		for(int i = 0; i<inputs.size(); i++){
 			Pair target = inputs.get(i);
@@ -31,6 +30,7 @@ class Main{
 				}
 			}
 		}
+		int result = 0;
 		for(int i = 1; i<=maxD; i++)	result += days[i];
 		System.out.println(result);	
 	}

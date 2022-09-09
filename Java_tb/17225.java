@@ -48,6 +48,7 @@ class Main{
 			}
 			finishTime = startTime + o.m * B;
 		}
+		
 		int counter = 1;
 		List<Integer> blueResults = new ArrayList<>();
 		List<Integer> redResults = new ArrayList<>();
