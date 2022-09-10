@@ -126,4 +126,3 @@ class Point{
 		this.time = time;
 	}
 }
-
