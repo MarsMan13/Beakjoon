@@ -28,11 +28,11 @@ class Main{
 			// END OF INIT
 			boolean result = true;	// result is true, then It can be binary ~.
 			OUTER: 
-			for(int i = 1; i<=V; i++){
+			for(int i = 1; i<=V; i++){	// 그래프가 복수 개일 수 있음.
 				if(nodes[i].visited != 0)	continue;
 				Queue<Integer> queue = new LinkedList<>();
 				queue.offer(i);
-				nodes[i].visited = 1;
+				nodes[i].visited = 1;	// visited를 색칠하는 용도로 사용함. visited = 1 or -1 색을 가짐.
 				while(!queue.isEmpty()){
 					Node curNode = nodes[queue.poll()];
 					for(int j : curNode.adjs){
@@ -41,7 +41,7 @@ class Main{
 							targetNode.visited = curNode.visited * -1;
 							queue.offer(j);
 						}
-						else if(targetNode.visited == curNode.visited){
+						else if(targetNode.visited == curNode.visited){	// 만약 인접노드와 나의 색깔이 같으면, Fail!
 							result = false;
 							break OUTER;
 						}
