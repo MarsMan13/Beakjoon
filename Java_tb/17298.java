@@ -22,7 +22,6 @@ class Main{
 		stack.push(array[N-1]);
 		for(int i = N-1; 0<=i; i--){
 			int curTop = array[i];
-			//
 			while(!stack.isEmpty()){
 				if(curTop < stack.peek()){
 					results[i] = stack.peek();

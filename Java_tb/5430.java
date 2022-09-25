@@ -7,7 +7,6 @@ class Main{
 	
 	public static void main(String[] args) throws IOException {
 		
-		
 		BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
 		int T = Integer.parseInt(bf.readLine());
 		StringBuilder sb = new StringBuilder();
@@ -18,7 +17,10 @@ class Main{
 			
 			int head = 0;
 			int tail = array.length - 1;	// == n
-			int flag = 1;
+			int flag = 1;	 // direction
+			// flag : 1 -> : head > tail
+			// flag : -1 <- : tail < head
+			// R : head
 			
 			int errorFlag = 0;
 			for(int i = 0; i<commands.length(); i++){
@@ -41,6 +43,8 @@ class Main{
 					else if(flag == -1){
 						head += flag;
 					}
+					// ^ head -> tail
+					// tail <- head ^
 				}
 			}
 			if(errorFlag == 1){
