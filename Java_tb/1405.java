@@ -20,7 +20,6 @@ class Main{
 			prob[i] = Integer.parseInt(st.nextToken());
 		}
 		// END OF INIT
-		// map[START_I][START_J] = 1;
 		dfs(START_I, START_J, 0, 1.);
 		System.out.println(answer);
 	}
@@ -39,6 +38,5 @@ class Main{
 				map[newI][newJ] = 0;
 			}
 		}
-		map[i][j] = 0;
 	}
 }
