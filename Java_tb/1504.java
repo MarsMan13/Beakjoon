@@ -1,102 +1,88 @@
 import java.util.*;
 import java.io.*;
 
-
-
 class Main{
-	
-	static int N, E;	// N : END POINT
-	static final int INF = 1000000;
-	static Node[] nodes = null;
-	
+
+	static int N;
+	static int E;
+	static int[][] map;
+	static final int INF = 1000000000;
 	public static void main(String[] args) throws IOException {
-		
 		
 		BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(bf.readLine());
 		N = Integer.parseInt(st.nextToken());
 		E = Integer.parseInt(st.nextToken());
-		nodes = new Node[N+1];
-		for(int i = 1; i<=N; i++)
-			nodes[i] = new Node(i);
+		map = new int[N+1][N+1];
+		for(int i = 0; i<=N; i++)
+			for(int j = 0; j<=N; j++)
+				map[i][j] = INF;
+		for(int i = 0; i<=N; i++)
+			map[i][i] = 0;
 		for(int i = 0; i<E; i++){
 			st = new StringTokenizer(bf.readLine());
-			int p1 = Integer.parseInt(st.nextToken());
-			int p2 = Integer.parseInt(st.nextToken());
-			int cost = Integer.parseInt(st.nextToken());
-			nodes[p1].edges.add(new Edge(p2, cost));
-			nodes[p2].edges.add(new Edge(p1, cost));
+			int a = Integer.parseInt(st.nextToken());
+			int b = Integer.parseInt(st.nextToken());
+			int c = Integer.parseInt(st.nextToken());
+			map[a][b] = map[b][a] = c;
 		}
 		st = new StringTokenizer(bf.readLine());
-		int[] startPoint = new int[]{
-			1, Integer.parseInt(st.nextToken()), Integer.parseInt(st.nextToken()), N
-		};
-		int result1 = 0;
-		for(int i = 0; i<3; i++){
-			result1 += dijkstra(startPoint[i], startPoint[i+1]);
+		int p1 = Integer.parseInt(st.nextToken());
+		int p2 = Integer.parseInt(st.nextToken());
+
+		int path1 = 0, path2 = 0;
+		{
+			int subPath1 = getDistance(1, p1);
+			int subPath2 = getDistance(p1, p2);
+			int subPath3 = getDistance(p2, N);
+			if(subPath1 == INF || subPath2 == INF || subPath3 == INF)
+				path1 = INF;
+			else	
+				path1 = subPath1 + subPath2 + subPath3;
 		}
 		{
-			int temp = startPoint[1];
-			startPoint[1] = startPoint[2];
-			startPoint[2] = temp;
+			int subPath1 = getDistance(1, p2);
+			int subPath2 = getDistance(p2, p1);
+			int subPath3 = getDistance(p1, N);
+			if(subPath1 == INF || subPath2 == INF || subPath3 == INF)
+				path2 = INF;
+			else	
+				path2 = subPath1 + subPath2 + subPath3;
 		}
-		int result2 = 0;
-		for(int i = 0; i<3; i++){
-			result2 += dijkstra(startPoint[i], startPoint[i+1]);
-		}
-		int result = result1 < result2 ? result1 : result2;
-		if(INF <= result)
-			System.out.println(-1);
-		else
-			System.out.println(result);
+		int result = Math.min(path1, path2);
+		System.out.println(result == INF ? -1 : result);
 	}
-	
-	public static int dijkstra(int start, int end){
-		for(int i = 1; i<=N; i++)
-			nodes[i].dist = Main.INF;
+
+	private static int getDistance(int start, int end){
+		int[] distance = new int[N+1];
 		int[] visited = new int[N+1];
-		nodes[start].dist = 0;
-		PriorityQueue<Node> pq = new PriorityQueue<>();
-		pq.offer(nodes[start]);
-		while(!(pq.isEmpty())){
-			Node temp = pq.poll();
-			visited[temp.index] = 1;
-			for(Edge e : temp.edges){
-				if(visited[e.to] == 0 && temp.dist + e.cost < nodes[e.to].dist){
-					pq.remove(nodes[e.to]);
-					nodes[e.to].dist = temp.dist + e.cost;
-					pq.offer(nodes[e.to]);
+		visited[start] = 1;
+		for(int i = 1; i<=N; i++){
+			distance[i] = map[start][i];
+		}
+
+		for(int s = 0; s<N-2; s++){
+			int cur = getNextIndex(distance, visited);
+			if(cur == 0)	break;
+			visited[cur] = 1;
+			for(int i = 1; i<=N; i++){
+				if(visited[i] == 0 && distance[cur] + map[cur][i] < distance[i]){
+					distance[i] = distance[cur] + map[cur][i];
 				}
 			}
 		}
-		return nodes[end].dist;
+		return distance[end];
+	}
+
+	private static int getNextIndex(int[] distance, int[] visited){
+		int minIndex = 0;
+		int minValue = INF;
+		for(int i = 1; i<=N; i++){
+			if(visited[i] == 0 && distance[i] < minValue){
+				minIndex = i;
+				minValue = distance[i];
+			}
+		}
+		return minIndex;
 	}
 }
-
-class Node implements Comparable<Node>{
-	int index;
-	int dist = Main.INF;
-	List<Edge> edges = new LinkedList<>();
-	
-	Node(int index){
-		this.index = index;
-	}
-	
-	@Override
-	public int compareTo(Node o){
-		return this.dist - o.dist;
-	}
-}
-
-class Edge{
-	int to;
-	int cost;
-	Edge(int to, int cost){
-		this.to = to;
-		this.cost = cost;
-	}
-}
-
-
-
-
