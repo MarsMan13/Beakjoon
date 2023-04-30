@@ -9,15 +9,13 @@ class Main{
 		StringTokenizer st = new StringTokenizer(bf.readLine());
 		int N = Integer.parseInt(st.nextToken());
 		int M = Integer.parseInt(st.nextToken());
-		char[][] map = new char[N+2][M+2];
-		for(int i = 0; i<=N+1; i++)	map[i][0] = map[i][M+1] = '#';
-		for(int j = 0; j<=M+1; j++)	map[0][j] = map[N+1][j] = '#';
+		char[][] map = new char[N][M];
 		Queue<Status> queue = new LinkedList<>();
-		boolean[][][] visited = new boolean[100][N+2][M+2];
-		for(int i = 1; i<=N; i++){
+		boolean[][][] visited = new boolean[64][N][M];
+		for(int i = 0; i<N; i++){
 			String line = bf.readLine();
-			for(int j = 1; j<=M; j++){
-				map[i][j] = line.charAt(j-1);
+			for(int j = 0; j<M; j++){
+				map[i][j] = line.charAt(j);
 				if(map[i][j] == '0'){
 					queue.offer(new Status(i,j,0,0));
 					visited[0][i][j] = true;
@@ -28,7 +26,6 @@ class Main{
 		// END OF INIT
 		while(!queue.isEmpty()){
 			Status cur = queue.poll();
-			visited[cur.keys][cur.row][cur.col] = true;
 			if(map[cur.row][cur.col] == '1'){
 				sucFlag = cur.steps;
 				break;
@@ -36,25 +33,31 @@ class Main{
 			for(int k = 0; k<4; k++){
 				int newRow = cur.row + ii[k];
 				int newCol = cur.col + jj[k];
-				Status newStatus;
+				if(newRow < 0 || N <= newRow || newCol < 0 || M <= newCol)	continue;
 				switch(map[newRow][newCol]){
 					case '.': case '0': case '1':
-						newStatus = new Status(newRow, newCol, cur.steps+1, cur.keys);
-						if(!visited[newStatus.keys][newStatus.row][newStatus.col])
+						if(!visited[cur.keys][newRow][newCol]){
+							Status newStatus = new Status(newRow, newCol, cur.steps+1, cur.keys);
+							visited[newStatus.keys][newStatus.row][newStatus.col] = true;
 							queue.offer(newStatus);
+						}
 						break;
 					case '#':
 						break;
 					case 'a':case 'b': case 'c':case 'd':case 'e':case 'f':
-						newStatus = new Status(newRow, newCol, cur.steps+1, Status.addKey(cur.keys, map[newRow][newCol]));
-						if(!visited[newStatus.keys][newStatus.row][newStatus.col])
+						if(!visited[Status.addKey(cur.keys, map[newRow][newCol])][newRow][newCol]){
+							Status newStatus = new Status(newRow, newCol, cur.steps+1, Status.addKey(cur.keys, map[newRow][newCol]));
+							visited[newStatus.keys][newStatus.row][newStatus.col] = true;
 							queue.offer(newStatus);
+						}
 						break;
 					case 'A':case 'B': case 'C': case 'D': case 'E': case 'F':
 						if(Status.checkKey(cur.keys, map[newRow][newCol])){
-							newStatus = new Status(newRow, newCol, cur.steps+1, cur.keys);
-							if(!visited[newStatus.keys][newStatus.row][newStatus.col])
+							if(!visited[cur.keys][newRow][newCol]){
+								Status newStatus = new Status(newRow, newCol, cur.steps+1, cur.keys);
+								visited[newStatus.keys][newStatus.row][newStatus.col] = true;
 								queue.offer(newStatus);
+							}
 						}
 						break;
 				}
